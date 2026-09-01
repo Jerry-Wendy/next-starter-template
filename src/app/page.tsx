@@ -1,88 +1,189 @@
-import Image from "next/image";
-
 export default function Home() {
-	return (
-		<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-			<main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-				<Image
-					className="dark:invert"
-					src="/next.svg"
-					alt="Next.js logo"
-					width={180}
-					height={38}
-					priority
-				/>
-				<ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-					<li className="mb-2 tracking-[-.01em]">
-						Get started by editing{" "}
-						<code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-							src/app/page.tsx
-						</code>
-						.
-					</li>
-					<li className="tracking-[-.01em]">
-						Save and see your changes instantly.
-					</li>
-				</ol>
+  const stats = [
+    { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
+    { label: "Upcoming Visits", value: "0", note: "Plan your first visit" },
+    { label: "Active Prospects", value: "2", note: "Initial test prospects" },
+    { label: "Open Quotes", value: "0", note: "No open quotes" },
+    { label: "Revenue", value: "$0", note: "Outreach attributed" },
+    { label: "Marketing ROI", value: "—", note: "Waiting for first results" },
+  ];
 
-				<div className="flex gap-4 items-center flex-col sm:flex-row">
-					<a
-						className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Read our docs
-					</a>
-				</div>
-			</main>
-			<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/file.svg"
-						alt="File icon"
-						width={16}
-						height={16}
-					/>
-					Learn
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/window.svg"
-						alt="Window icon"
-						width={16}
-						height={16}
-					/>
-					Examples
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/globe.svg"
-						alt="Globe icon"
-						width={16}
-						height={16}
-					/>
-					Go to nextjs.org →
-				</a>
-			</footer>
-		</div>
-	);
+  const prospects = [
+    {
+      name: "Cypress Knoll Golf Club",
+      industry: "Golf Course",
+      status: "Prospect",
+      next: "Plan Visit",
+    },
+    {
+      name: "Pine Lakes Golf Course",
+      industry: "Golf Course",
+      status: "Prospect",
+      next: "Plan Visit",
+    },
+  ];
+
+  return (
+    <main className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="border-b bg-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Lillian Harper CRM
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              Business Development & Relationship Marketing
+            </p>
+          </div>
+
+          <div className="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium">
+            CRM 1.0
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[220px_1fr]">
+        <aside className="rounded-2xl border bg-white p-4 shadow-sm">
+          <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Navigation
+          </p>
+
+          <nav className="space-y-1">
+            {[
+              "Dashboard",
+              "Prospects",
+              "Contacts",
+              "Visit Planner",
+              "Visit Log",
+              "Samples",
+              "Follow-Ups",
+              "Opportunities",
+              "Orders",
+              "Products",
+              "ROI",
+            ].map((item, index) => (
+              <button
+                key={item}
+                className={`w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium ${
+                  index === 0
+                    ? "bg-slate-900 text-white"
+                    : "text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </nav>
+        </aside>
+
+        <section className="space-y-6">
+          <div>
+            <p className="text-sm font-medium text-slate-500">
+              Tuesday, September 1, 2026
+            </p>
+            <h2 className="mt-1 text-3xl font-bold tracking-tight">
+              Good afternoon
+            </h2>
+            <p className="mt-2 text-slate-500">
+              Less data entry. More relationship building.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border bg-white p-5 shadow-sm"
+              >
+                <p className="text-sm font-medium text-slate-500">
+                  {stat.label}
+                </p>
+                <p className="mt-2 text-3xl font-bold">{stat.value}</p>
+                <p className="mt-2 text-xs text-slate-400">{stat.note}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-2">
+            <div className="rounded-2xl border bg-white p-6 shadow-sm">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">Priority Prospects</h3>
+                  <p className="text-sm text-slate-500">
+                    Businesses ready for outreach
+                  </p>
+                </div>
+
+                <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
+                  + Add Prospect
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {prospects.map((prospect) => (
+                  <div
+                    key={prospect.name}
+                    className="rounded-xl border p-4"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="font-semibold">{prospect.name}</p>
+                        <p className="mt-1 text-sm text-slate-500">
+                          {prospect.industry}
+                        </p>
+                      </div>
+
+                      <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+                        {prospect.status}
+                      </span>
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between border-t pt-3">
+                      <span className="text-xs text-slate-400">Next step</span>
+                      <span className="text-sm font-medium">{prospect.next}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-semibold">Today</h3>
+              <p className="mt-1 text-sm text-slate-500">
+                Your relationship marketing checklist
+              </p>
+
+              <div className="mt-5 space-y-3">
+                {[
+                  "Review follow-ups due",
+                  "Plan upcoming visits",
+                  "Choose prospect-specific samples",
+                  "Record completed visits",
+                  "Update quotes and opportunities",
+                ].map((task) => (
+                  <div
+                    key={task}
+                    className="flex items-center gap-3 rounded-xl border p-4"
+                  >
+                    <div className="h-5 w-5 rounded border-2 border-slate-300" />
+                    <span className="text-sm font-medium">{task}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl bg-slate-900 p-6 text-white">
+            <p className="text-sm font-semibold text-slate-300">
+              LILLIAN HARPER WORKFLOW
+            </p>
+            <p className="mt-3 text-sm leading-7 text-slate-100">
+              Prospect → Plan Visit → Choose Samples → Engrave → Present →
+              Record Visit → Follow Up → Quote → Order → Revenue → ROI
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
 }
