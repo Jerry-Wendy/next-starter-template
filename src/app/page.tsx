@@ -1,3 +1,4 @@
+import { prospects } from "./data/demo";
 export default function Home() {
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
@@ -6,21 +7,6 @@ export default function Home() {
     { label: "Open Quotes", value: "0", note: "No open quotes" },
     { label: "Revenue", value: "$0", note: "Outreach attributed" },
     { label: "Marketing ROI", value: "—", note: "Waiting for first results" },
-  ];
-
-  const prospects = [
-    {
-      name: "Cypress Knoll Golf Club",
-      industry: "Golf Course",
-      status: "Prospect",
-      next: "Plan Visit",
-    },
-    {
-      name: "Pine Lakes Golf Course",
-      industry: "Golf Course",
-      status: "Prospect",
-      next: "Plan Visit",
-    },
   ];
 
   return (
