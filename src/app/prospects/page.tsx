@@ -30,9 +30,9 @@ export default function ProspectsPage() {
             </p>
           </div>
 
-          <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
+          <Link href="/prospects/new" className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
             + Add Prospect
-          </button>
+          </Link>
         </div>
 
         <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
