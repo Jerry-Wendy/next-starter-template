@@ -13,50 +13,21 @@ export async function GET() {
     );
   }
 
-  const response = await fetch(`${url}/rest/v1/`, {
-    headers: {
-      apikey: key,
-      Accept: "application/openapi+json",
-    },
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    return NextResponse.json(
-      { error: `Supabase returned ${response.status}` },
-      { status: response.status }
-    );
-  }
-
-  const schema: any = await response.json();
-
-  const definitions =
-    schema.definitions ??
-    schema.components?.schemas ??
-    {};
-
-  function tableInfo(name: string) {
-    const table = definitions[name];
-
-    if (!table) {
-      return { error: `${name} table not found in API schema` };
+  const response = await fetch(
+    `${url}/rest/v1/businesses?select=*&limit=5`,
+    {
+      headers: {
+        apikey: key,
+      },
+      cache: "no-store",
     }
+  );
 
-    const properties = table.properties ?? {};
-
-    return Object.fromEntries(
-      Object.entries(properties).map(([column, details]: [string, any]) => [
-        column,
-        {
-          type: details.type ?? null,
-          format: details.format ?? null,
-        },
-      ])
-    );
-  }
+  const body = await response.text();
 
   return NextResponse.json({
-    businesses: tableInfo("businesses"),
-    contacts: tableInfo("contacts"),
+    status: response.status,
+    ok: response.ok,
+    body,
   });
 }
