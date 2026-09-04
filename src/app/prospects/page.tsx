@@ -1,7 +1,26 @@
 import Link from "next/link";
-import { prospects } from "../data/demo";
+import { createClient } from "../lib/supabase/server";
 
-export default function ProspectsPage() {
+export default async function ProspectsPage() {
+  const supabase = await createClient();
+
+  const { data: businesses, error } = await supabase
+    .from("businesses")
+    .select("id, name, industry, relationship_status, next_follow_up")
+    .eq("relationship_status", "Prospect")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw new Error(`Could not load prospects: ${error.message}`);
+  }
+
+  const prospects = (businesses ?? []).map((business) => ({
+    id: business.id,
+    name: business.name,
+    industry: business.industry || "—",
+    status: business.relationship_status || "Prospect",
+    next: business.next_follow_up ? "Follow Up" : "Plan Visit",
+  }));
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
