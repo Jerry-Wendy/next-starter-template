@@ -1,6 +1,15 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "./lib/supabase/server";
 import { prospects } from "./data/demo";
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
     { label: "Upcoming Visits", value: "0", note: "Plan your first visit" },
