@@ -1,16 +1,36 @@
 import Link from "next/link";
 
-const contacts = [
-  {
-    name: "Sample Contact",
-    business: "Cypress Knoll Golf Club",
-    role: "Manager",
-    phone: "",
-    email: "",
-  },
-];
+import { createClient } from "../lib/supabase/server";
 
-export default function ContactsPage() {
+export default async function ContactsPage() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("contacts")
+    .select(`
+      id,
+      name,
+      title,
+      phone,
+      email,
+      businesses (
+        name
+      )
+    `)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw new Error(`Could not load contacts: ${error.message}`);
+  }
+
+  const contacts = (data ?? []).map((contact) => ({
+    id: contact.id,
+    name: contact.name,
+    business: contact.businesses?.[0]?.name || "—",
+    role: contact.title || "—",
+    phone: contact.phone || "",
+    email: contact.email || "",
+  }));
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
