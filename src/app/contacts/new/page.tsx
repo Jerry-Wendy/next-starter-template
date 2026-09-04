@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { saveContact } from "./actions";
 
 export default function NewContactPage() {
   return (
@@ -23,12 +24,15 @@ export default function NewContactPage() {
 
       <section className="mx-auto max-w-4xl px-6 py-8">
         <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <form action={saveContact}>
           <div className="grid gap-6 sm:grid-cols-2">
             <label className="block">
               <span className="text-sm font-semibold">Contact Name *</span>
               <input
                 type="text"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="name"
+                required
                 placeholder="Full name"
               />
             </label>
@@ -38,6 +42,7 @@ export default function NewContactPage() {
               <input
                 type="text"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="business"
                 placeholder="Business name"
               />
             </label>
@@ -47,6 +52,7 @@ export default function NewContactPage() {
               <input
                 type="text"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="title"
                 placeholder="Manager, Owner, Buyer..."
               />
             </label>
@@ -56,6 +62,7 @@ export default function NewContactPage() {
               <input
                 type="tel"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="phone"
                 placeholder="Phone number"
               />
             </label>
@@ -65,6 +72,7 @@ export default function NewContactPage() {
               <input
                 type="email"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="email"
                 placeholder="Email address"
               />
             </label>
@@ -74,7 +82,8 @@ export default function NewContactPage() {
               <textarea
                 rows={4}
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
-                placeholder="Relationship notes, preferences, follow-up details..."
+                name="notes"
+              placeholder="Relationship notes, preferences, follow-up details..."
               />
             </label>
           </div>
@@ -88,12 +97,13 @@ export default function NewContactPage() {
             </Link>
 
             <button
-              type="button"
+              type="submit"
               className="rounded-lg bg-slate-900 px-5 py-2.5 font-semibold text-white"
             >
               Save Contact
             </button>
           </div>
+        </form>
         </div>
       </section>
     </main>
