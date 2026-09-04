@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { saveProspect } from "./actions";
 
 export default function NewProspectPage() {
   return (
@@ -23,12 +24,15 @@ export default function NewProspectPage() {
 
       <section className="mx-auto max-w-4xl px-6 py-8">
         <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <form action={saveProspect}>
           <div className="grid gap-6 sm:grid-cols-2">
             <label className="block">
               <span className="text-sm font-semibold">Business Name *</span>
               <input
                 type="text"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="business_name"
+                required
                 placeholder="Business name"
               />
             </label>
@@ -38,6 +42,7 @@ export default function NewProspectPage() {
               <input
                 type="text"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="industry"
                 placeholder="Golf Course, Realtor, Restaurant..."
               />
             </label>
@@ -47,6 +52,7 @@ export default function NewProspectPage() {
               <input
                 type="text"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+              name="contact_name"
                 placeholder="Primary contact"
               />
             </label>
@@ -56,6 +62,7 @@ export default function NewProspectPage() {
               <input
                 type="tel"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="phone"
                 placeholder="Phone number"
               />
             </label>
@@ -65,6 +72,7 @@ export default function NewProspectPage() {
               <input
                 type="email"
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
+                name="email"
                 placeholder="Email address"
               />
             </label>
@@ -74,7 +82,8 @@ export default function NewProspectPage() {
               <textarea
                 rows={4}
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
-                placeholder="Anything useful about this prospect..."
+                name="notes"
+              placeholder="Anything useful about this prospect..."
               />
             </label>
           </div>
@@ -88,12 +97,13 @@ export default function NewProspectPage() {
             </Link>
 
             <button
-              type="button"
+              type="submit"
               className="rounded-lg bg-slate-900 px-5 py-2.5 font-semibold text-white"
             >
               Save Prospect
             </button>
           </div>
+        </form>
         </div>
       </section>
     </main>
