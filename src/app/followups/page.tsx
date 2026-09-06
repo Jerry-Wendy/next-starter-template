@@ -28,8 +28,8 @@ export default async function FollowUpsPage() {
 
   const followups = (data ?? []).map((item) => ({
     id: item.id,
-    business: item.businesses?.[0]?.name || "—",
-    contact: item.contacts?.[0]?.name || "—",
+    business: (item.businesses as any)?.name || "—",
+    contact: (item.contacts as any)?.name || "—",
     dueDate: item.due_date || "—",
     status: item.status || "Open",
     priority: item.priority || "Normal",
