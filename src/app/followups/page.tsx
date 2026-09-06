@@ -65,12 +65,12 @@ export default async function FollowUpsPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
-          >
-            + Add Follow-Up
-          </button>
+          <Link
+          href="/followups/new"
+          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+        >
+          + Add Follow-Up
+        </Link>
         </div>
 
         <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
