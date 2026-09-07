@@ -1,7 +1,28 @@
 import Link from "next/link";
+import { createClient } from "../../lib/supabase/server";
 import { addSample } from "./actions";
 
-export default function NewSamplePage() {
+export default async function NewSamplePage() {
+  const supabase = await createClient();
+
+  const { data: products, error: productsError } = await supabase
+    .from("products")
+    .select(`
+      id,
+      name,
+      wholesale_cost,
+      product_colors(
+        color_id,
+        colors(id, name)
+      )
+    `)
+    .eq("active", true)
+    .order("name");
+
+  if (productsError) {
+    throw new Error(`Could not load products: ${productsError.message}`);
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 p-8">
       <div className="mx-auto max-w-2xl">
@@ -40,11 +61,56 @@ export default function NewSamplePage() {
 
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700">
-              Sample Description
+              Product *
+            </label>
+            <select
+              name="product_id"
+              required
+              defaultValue=""
+              className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            >
+              <option value="">Select product</option>
+              {(products ?? []).map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-700">
+              Color
+            </label>
+            <select
+              name="color_id"
+              defaultValue=""
+              className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            >
+              <option value="">Select color</option>
+              {(products ?? []).flatMap((product) =>
+                (product.product_colors ?? []).map((pc: any) => (
+                  <option
+                    key={`${product.id}-${pc.color_id}`}
+                    value={pc.color_id}
+                  >
+                    {product.name} — {pc.colors?.name ?? "Color"}
+                  </option>
+                ))
+              )}
+            </select>
+            <p className="mt-1 text-xs text-slate-500">
+              Choose a color listed for the selected product.
+            </p>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-700">
+              Sample Notes
             </label>
             <input
               name="sample_description"
-              placeholder="Example: 12oz green wine tumbler"
+              placeholder="Optional notes about this sample"
               className="w-full rounded-lg border border-slate-300 px-3 py-2"
             />
           </div>
