@@ -154,6 +154,14 @@ export default async function Home() {
                   >
                     {item}
                   </Link>
+                ) : item === "Products" ? (
+                  <Link
+                    key={item}
+                    href="/products"
+                    className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-600 hover:bg-slate-100"
+                  >
+                    {item}
+                  </Link>
                 ) : (
           <button
               key={item}
