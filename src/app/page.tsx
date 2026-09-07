@@ -24,10 +24,23 @@ export default async function Home() {
     throw new Error(`Could not load follow-up count: ${followUpsError.message}`);
   }
 
+  const { count: activeProspects, error: prospectsError } = await supabase
+    .from("businesses")
+    .select("*", { count: "exact", head: true })
+    .eq("relationship_status", "Prospect");
+
+  if (prospectsError) {
+    throw new Error(`Could not load prospect count: ${prospectsError.message}`);
+  }
+
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
     { label: "Upcoming Visits", value: "0", note: "Plan your first visit" },
-    { label: "Active Prospects", value: "2", note: "Initial test prospects" },
+    {
+      label: "Active Prospects",
+      value: String(activeProspects ?? 0),
+      note: (activeProspects ?? 0) > 0 ? "Prospects being developed" : "No active prospects",
+    },
     { label: "Open Quotes", value: "0", note: "No open quotes" },
     { label: "Revenue", value: "$0", note: "Outreach attributed" },
     { label: "Marketing ROI", value: "—", note: "Waiting for first results" },
