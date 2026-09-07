@@ -13,7 +13,8 @@ export default async function SamplesPage() {
       engraving_cost,
       date_given,
       result,
-      businesses(name)
+      businesses(name),
+      colors(name)
     `)
     .order("date_given", { ascending: false });
 
@@ -55,6 +56,7 @@ export default async function SamplesPage() {
               <tr>
                 <th className="px-5 py-3">Business</th>
                 <th className="px-5 py-3">Sample</th>
+                <th className="px-5 py-3">Color</th>
                 <th className="px-5 py-3">Date Given</th>
                 <th className="px-5 py-3">Internal Cost</th>
                 <th className="px-5 py-3">Engraving</th>
@@ -65,11 +67,13 @@ export default async function SamplesPage() {
             <tbody className="divide-y divide-slate-100">
               {(samples ?? []).map((sample) => {
                 const business = (sample.businesses as any)?.name ?? "—";
+                const color = (sample.colors as any)?.name ?? "—";
 
                 return (
                   <tr key={sample.id} className="text-sm text-slate-700">
                     <td className="px-5 py-4 font-medium">{business}</td>
                     <td className="px-5 py-4">{sample.sample_description || "—"}</td>
+                    <td className="px-5 py-4">{color}</td>
                     <td className="px-5 py-4">{sample.date_given || "—"}</td>
                     <td className="px-5 py-4">
                       {sample.internal_cost != null
@@ -88,7 +92,7 @@ export default async function SamplesPage() {
 
               {(samples ?? []).length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-5 py-10 text-center text-sm text-slate-500">
+                  <td colSpan={7} className="px-5 py-10 text-center text-sm text-slate-500">
                     No samples recorded yet.
                   </td>
                 </tr>
