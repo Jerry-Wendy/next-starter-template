@@ -10,6 +10,20 @@ export default async function Home() {
     redirect("/login");
   }
 
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
+
+  const { count: followUpsDue, error: followUpsError } = await supabase
+    .from("followups")
+    .select("*", { count: "exact", head: true })
+    .lte("due_date", today)
+    .neq("status", "Completed");
+
+  if (followUpsError) {
+    throw new Error(`Could not load follow-up count: ${followUpsError.message}`);
+  }
+
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
     { label: "Upcoming Visits", value: "0", note: "Plan your first visit" },
