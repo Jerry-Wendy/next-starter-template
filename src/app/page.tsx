@@ -33,9 +33,22 @@ export default async function Home() {
     throw new Error(`Could not load prospect count: ${prospectsError.message}`);
   }
 
+  const { count: upcomingVisits, error: visitsError } = await supabase
+    .from("visits")
+    .select("*", { count: "exact", head: true })
+    .gte("visit_date", new Date().toISOString());
+
+  if (visitsError) {
+    throw new Error(`Could not load upcoming visit count: ${visitsError.message}`);
+  }
+
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
-    { label: "Upcoming Visits", value: "0", note: "Plan your first visit" },
+    {
+      label: "Upcoming Visits",
+      value: String(upcomingVisits ?? 0),
+      note: (upcomingVisits ?? 0) > 0 ? "Visits scheduled" : "Plan your first visit",
+    },
     {
       label: "Active Prospects",
       value: String(activeProspects ?? 0),
