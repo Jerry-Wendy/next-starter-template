@@ -46,6 +46,14 @@ export default async function Home() {
     { label: "Marketing ROI", value: "—", note: "Waiting for first results" },
   ];
 
+  const dashboardDate = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "America/New_York",
+  }).format(new Date());
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
@@ -128,7 +136,7 @@ export default async function Home() {
         <section className="space-y-6">
           <div>
             <p className="text-sm font-medium text-slate-500">
-              Tuesday, September 1, 2026
+              {dashboardDate}
             </p>
             <h2 className="mt-1 text-3xl font-bold tracking-tight">
               Good afternoon
