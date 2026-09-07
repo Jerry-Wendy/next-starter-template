@@ -38,7 +38,11 @@ export async function saveVisit(formData: FormData) {
       throw new Error(`Could not find business: ${error.message}`);
     }
 
-    businessId = business?.id ?? null;
+    if (!business) {
+      throw new Error(`Business "${businessName}" was not found. Please use an existing business name.`);
+    }
+
+    businessId = business.id;
   }
 
   if (contactName) {
