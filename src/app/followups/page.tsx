@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "../lib/supabase/server";
+import { completeFollowUp } from "./actions";
 
 export default async function FollowUpsPage() {
   const supabase = await createClient();
@@ -83,6 +84,7 @@ export default async function FollowUpsPage() {
                 <th className="px-5 py-3">Priority</th>
                 <th className="px-5 py-3">Status</th>
                 <th className="px-5 py-3">Notes</th>
+              <th className="px-5 py-3">Action</th>
               </tr>
             </thead>
 
@@ -95,6 +97,21 @@ export default async function FollowUpsPage() {
                   <td className="px-5 py-4 text-sm text-slate-600">{item.priority}</td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.status}</td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.notes}</td>
+              <td className="px-5 py-4">
+                {item.status !== "Completed" ? (
+                  <form action={completeFollowUp}>
+                    <input type="hidden" name="id" value={item.id} />
+                    <button
+                      type="submit"
+                      className="rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-slate-100"
+                    >
+                      Complete
+                    </button>
+                  </form>
+                ) : (
+                  <span className="text-sm text-slate-500">Completed</span>
+                )}
+              </td>
                 </tr>
               ))}
             </tbody>
