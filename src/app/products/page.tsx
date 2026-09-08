@@ -11,6 +11,7 @@ export default async function ProductsPage() {
       name,
       sku,
       category,
+      customer_image_url,
       manufacturer,
       supplier,
       wholesale_cost,
@@ -59,6 +60,7 @@ export default async function ProductsPage() {
           <table className="w-full text-left">
             <thead className="bg-slate-100 text-sm text-slate-600">
               <tr>
+                <th className="px-5 py-3">Image</th>
                 <th className="px-5 py-3">Product</th>
                 <th className="px-5 py-3">SKU</th>
                 <th className="px-5 py-3">Category</th>
@@ -73,6 +75,17 @@ export default async function ProductsPage() {
             <tbody className="divide-y divide-slate-100">
               {(products ?? []).map((product) => (
                 <tr key={product.id} className="text-sm text-slate-700">
+              <td className="px-5 py-3">
+                {product.customer_image_url ? (
+                  <img
+                    src={product.customer_image_url}
+                    alt={product.name}
+                    className="h-14 w-14 rounded-md border border-slate-200 bg-white object-contain"
+                  />
+                ) : (
+                  <span className="text-slate-400">—</span>
+                )}
+              </td>
                   <td className="px-5 py-4 font-medium">
                     <Link
                       href={`/products/${product.id}`}
@@ -108,7 +121,7 @@ export default async function ProductsPage() {
               {(products ?? []).length === 0 && (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="px-5 py-12 text-center text-sm text-slate-500"
                   >
                     No products in the catalog yet.
