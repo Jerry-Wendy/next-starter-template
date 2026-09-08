@@ -25,7 +25,13 @@ export default async function ProductDetailPage({ params }: Props) {
       additional_engraving_fee,
       availability,
       internal_notes,
-      active
+      active,
+      show_in_customer_catalog,
+      local_only,
+      customer_description,
+      customer_image_url,
+      catalog_category,
+      catalog_sort_order
     `)
     .eq("id", id)
     .single();
