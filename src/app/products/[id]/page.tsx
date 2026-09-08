@@ -235,6 +235,42 @@ export default async function ProductDetailPage({ params }: Props) {
               />
             </div>
 
+
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700">
+                  Catalog Category
+                </label>
+                <input
+                  type="text"
+                  name="catalog_category"
+                  defaultValue={product.catalog_category ?? ""}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700">
+                  Catalog Sort Order
+                </label>
+                <input
+                  type="number"
+                  name="catalog_sort_order"
+                  defaultValue={product.catalog_sort_order ?? 0}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white"
+            >
+              Save Catalog Settings
+            </button>
+          </form>
+
             <div className="rounded-lg border border-slate-200 p-4">
               <h3 className="text-sm font-semibold text-slate-900">
                 Upload Product Image
@@ -276,40 +312,6 @@ export default async function ProductDetailPage({ params }: Props) {
                 </button>
               </form>
             </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">
-                  Catalog Category
-                </label>
-                <input
-                  type="text"
-                  name="catalog_category"
-                  defaultValue={product.catalog_category ?? ""}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">
-                  Catalog Sort Order
-                </label>
-                <input
-                  type="number"
-                  name="catalog_sort_order"
-                  defaultValue={product.catalog_sort_order ?? 0}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white"
-            >
-              Save Catalog Settings
-            </button>
-          </form>
         </section>
 
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
