@@ -89,7 +89,7 @@ export default async function CatalogPage() {
                     </p>
                   )}
 
-                  {tiers.length > 0 ? (
+                  {product.local_only && tiers.length > 0 ? (
                     <div className="mt-5">
                       <p className="text-sm font-semibold text-slate-900">
                         Quantity Pricing
@@ -117,11 +117,32 @@ export default async function CatalogPage() {
                         ))}
                       </div>
                     </div>
-                  ) : product.retail_price != null ? (
-                    <p className="mt-5 text-lg font-semibold text-slate-900">
-                      ${Number(product.retail_price).toFixed(2)}
-                    </p>
-                  ) : null}
+                  ) : (
+                    <div className="mt-5">
+                      {product.retail_price != null && (
+                        <p className="text-lg font-semibold text-slate-900">
+                          ${Number(product.retail_price).toFixed(2)}
+                        </p>
+                      )}
+
+                      {!product.local_only && (
+                        <div className="mt-3 text-sm text-slate-600">
+                          <p className="font-medium text-slate-900">
+                            Need a larger quantity?
+                          </p>
+                          <p className="mt-1">
+                            Contact us for bulk pricing at{" "}
+                            <a
+                              href="mailto:lillianharperinc@gmail.com"
+                              className="font-medium underline"
+                            >
+                              lillianharperinc@gmail.com
+                            </a>
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {product.local_only && (
                     <p className="mt-4 text-xs font-medium text-slate-500">
