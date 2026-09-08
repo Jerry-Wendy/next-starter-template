@@ -70,6 +70,17 @@ export default async function ProductDetailPage({ params }: Props) {
     throw new Error(`Could not load pricing tiers: ${pricingError.message}`);
   }
 
+  const { data: costTiers, error: costError } = await supabase
+    .from("product_cost_tiers")
+    .select("id, min_quantity, max_quantity, unit_cost, cost_label, sort_order")
+    .eq("product_id", id)
+    .order("sort_order", { ascending: true })
+    .order("min_quantity", { ascending: true });
+
+  if (costError) {
+    throw new Error(`Could not load supplier cost tiers: ${costError.message}`);
+  }
+
   const assignedIds = new Set(
     (assignedColors ?? []).map((item) => item.color_id)
   );
@@ -313,6 +324,53 @@ export default async function ProductDetailPage({ params }: Props) {
               </form>
             </div>
         </section>
+
+      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-slate-900">
+            Supplier Cost Tiers
+          </h2>
+          <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
+            PRIVATE
+          </span>
+        </div>
+
+        <p className="mt-1 text-sm text-slate-500">
+          Internal purchasing costs. Never shown in the Customer Catalog.
+        </p>
+
+        <div className="mt-5 space-y-3">
+          {(costTiers ?? []).length === 0 ? (
+            <p className="text-sm text-slate-500">
+              No supplier cost tiers for this product.
+            </p>
+          ) : (
+            (costTiers ?? []).map((tier) => (
+              <div
+                key={tier.id}
+                className="flex items-center justify-between rounded-lg border border-slate-200 p-3 text-sm"
+              >
+                <div>
+                  <span className="font-medium text-slate-900">
+                    {tier.min_quantity}
+                    {tier.max_quantity ? `–${tier.max_quantity}` : "+"}
+                  </span>
+
+                  {tier.cost_label && (
+                    <span className="ml-3 text-slate-500">
+                      {tier.cost_label}
+                    </span>
+                  )}
+                </div>
+
+                <span className="font-semibold text-slate-900">
+                  ${Number(tier.unit_cost).toFixed(2)} each
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
 
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900">
