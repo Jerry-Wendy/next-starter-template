@@ -73,7 +73,14 @@ export default async function ProductsPage() {
             <tbody className="divide-y divide-slate-100">
               {(products ?? []).map((product) => (
                 <tr key={product.id} className="text-sm text-slate-700">
-                  <td className="px-5 py-4 font-medium">{product.name}</td>
+                  <td className="px-5 py-4 font-medium">
+                    <Link
+                      href={`/products/${product.id}`}
+                      className="text-slate-900 hover:underline"
+                    >
+                      {product.name}
+                    </Link>
+                  </td>
                   <td className="px-5 py-4">{product.sku || "—"}</td>
                   <td className="px-5 py-4">{product.category || "—"}</td>
                   <td className="px-5 py-4">
