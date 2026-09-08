@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "../../lib/supabase/server";
+import { updateProductColors } from "./actions";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -132,25 +133,37 @@ export default async function ProductDetailPage({ params }: Props) {
               Available Colors
             </h2>
 
-            <div className="grid grid-cols-2 gap-3">
-              {(colors ?? []).map((color) => {
-                const assigned = assignedIds.has(color.id);
+            <form action={updateProductColors}>
+              <input type="hidden" name="product_id" value={product.id} />
 
-                return (
-                  <div
-                    key={color.id}
-                    className={`rounded-lg border px-3 py-2 text-sm ${
-                      assigned
-                        ? "border-slate-900 bg-slate-100 font-medium text-slate-900"
-                        : "border-slate-200 text-slate-500"
-                    }`}
-                  >
-                    {assigned ? "✓ " : ""}
-                    {color.name}
-                  </div>
-                );
-              })}
-            </div>
+              <div className="grid grid-cols-2 gap-3">
+                {(colors ?? []).map((color) => {
+                  const assigned = assignedIds.has(color.id);
+
+                  return (
+                    <label
+                      key={color.id}
+                      className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700"
+                    >
+                      <input
+                        type="checkbox"
+                        name="color_ids"
+                        value={color.id}
+                        defaultChecked={assigned}
+                      />
+                      {color.name}
+                    </label>
+                  );
+                })}
+              </div>
+
+              <button
+                type="submit"
+                className="mt-5 rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white"
+              >
+                Save Colors
+              </button>
+            </form>
           </section>
         </div>
       </div>
