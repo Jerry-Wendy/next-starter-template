@@ -106,3 +106,91 @@ export async function updateCatalogSettings(formData: FormData) {
   revalidatePath("/products");
 }
 
+export async function addPricingTier(formData: FormData) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
+  const productId = String(formData.get("product_id") || "").trim();
+  const minQuantity = Number(formData.get("min_quantity"));
+  const maxRaw = String(formData.get("max_quantity") || "").trim();
+  const unitPriceRaw = String(formData.get("unit_price") || "").trim();
+  const priceLabel = String(formData.get("price_label") || "").trim() || null;
+  const sortOrder = Number(formData.get("sort_order") || 0);
+
+  if (!productId) {
+    throw new Error("Product ID is required.");
+  }
+
+  if (!Number.isFinite(minQuantity) || minQuantity < 1) {
+    throw new Error("Minimum quantity must be at least 1.");
+  }
+
+  const maxQuantity = maxRaw ? Number(maxRaw) : null;
+  const unitPrice = unitPriceRaw ? Number(unitPriceRaw) : null;
+
+  if (maxQuantity !== null && !Number.isFinite(maxQuantity)) {
+    throw new Error("Maximum quantity is invalid.");
+  }
+
+  if (unitPrice !== null && !Number.isFinite(unitPrice)) {
+    throw new Error("Unit price is invalid.");
+  }
+
+  if (unitPrice === null && !priceLabel) {
+    throw new Error("Enter either a unit price or a price label such as Contact Us.");
+  }
+
+  const { error } = await supabase
+    .from("product_pricing_tiers")
+    .insert({
+      product_id: productId,
+      min_quantity: minQuantity,
+      max_quantity: maxQuantity,
+      unit_price: unitPrice,
+      price_label: priceLabel,
+      sort_order: sortOrder,
+    });
+
+  if (error) {
+    throw new Error(`Could not add pricing tier: ${error.message}`);
+  }
+
+  revalidatePath(`/products/${productId}`);
+}
+
+export async function deletePricingTier(formData: FormData) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
+  const tierId = String(formData.get("tier_id") || "").trim();
+  const productId = String(formData.get("product_id") || "").trim();
+
+  if (!tierId || !productId) {
+    throw new Error("Pricing tier information is required.");
+  }
+
+  const { error } = await supabase
+    .from("product_pricing_tiers")
+    .delete()
+    .eq("id", tierId);
+
+  if (error) {
+    throw new Error(`Could not delete pricing tier: ${error.message}`);
+  }
+
+  revalidatePath(`/products/${productId}`);
+}

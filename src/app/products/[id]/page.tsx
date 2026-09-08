@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "../../lib/supabase/server";
-import { updateCatalogSettings, updateProductColors } from "./actions";
+import { addPricingTier, deletePricingTier, updateCatalogSettings, updateProductColors } from "./actions";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -57,6 +57,17 @@ export default async function ProductDetailPage({ params }: Props) {
 
   if (assignedError) {
     throw new Error(`Could not load product colors: ${assignedError.message}`);
+  }
+
+  const { data: pricingTiers, error: pricingError } = await supabase
+    .from("product_pricing_tiers")
+    .select("id, min_quantity, max_quantity, unit_price, price_label, sort_order")
+    .eq("product_id", id)
+    .order("sort_order", { ascending: true })
+    .order("min_quantity", { ascending: true });
+
+  if (pricingError) {
+    throw new Error(`Could not load pricing tiers: ${pricingError.message}`);
   }
 
   const assignedIds = new Set(
@@ -255,6 +266,105 @@ export default async function ProductDetailPage({ params }: Props) {
               className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white"
             >
               Save Catalog Settings
+            </button>
+          </form>
+        </section>
+
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900">
+            Pricing Tiers
+          </h2>
+
+          <div className="mt-5 space-y-3">
+            {(pricingTiers ?? []).length === 0 ? (
+              <p className="text-sm text-slate-500">
+                No pricing tiers for this product.
+              </p>
+            ) : (
+              (pricingTiers ?? []).map((tier) => (
+                <div
+                  key={tier.id}
+                  className="flex items-center justify-between rounded-lg border border-slate-200 p-3 text-sm"
+                >
+                  <div>
+                    <span className="font-medium text-slate-900">
+                      {tier.min_quantity}
+                      {tier.max_quantity ? `-${tier.max_quantity}` : "+"}
+                    </span>
+                    <span className="ml-3 text-slate-600">
+                      {tier.unit_price != null
+                        ? `$${Number(tier.unit_price).toFixed(2)}`
+                        : tier.price_label || "Contact Us"}
+                    </span>
+                  </div>
+
+                  <form action={deletePricingTier}>
+                    <input type="hidden" name="tier_id" value={tier.id} />
+                    <input type="hidden" name="product_id" value={product.id} />
+                    <button
+                      type="submit"
+                      className="text-sm font-medium text-red-600 hover:text-red-800"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              ))
+            )}
+          </div>
+
+          <form action={addPricingTier} className="mt-6 space-y-4">
+            <input type="hidden" name="product_id" value={product.id} />
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+              <input
+                type="number"
+                name="min_quantity"
+                min="1"
+                placeholder="Min Qty"
+                required
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+
+              <input
+                type="number"
+                name="max_quantity"
+                min="1"
+                placeholder="Max Qty"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+
+              <input
+                type="number"
+                name="unit_price"
+                min="0"
+                step="0.01"
+                placeholder="Unit Price"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+
+              <input
+                type="text"
+                name="price_label"
+                placeholder="Contact Us"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+
+              <input
+                type="number"
+                name="sort_order"
+                min="0"
+                defaultValue={0}
+                placeholder="Sort"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white"
+            >
+              Add Pricing Tier
             </button>
           </form>
         </section>
