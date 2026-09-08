@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "../../lib/supabase/server";
-import { addPricingTier, deletePricingTier, updateCatalogSettings, updateProductColors } from "./actions";
+import { addPricingTier, deletePricingTier, updateCatalogSettings, updateProductColors, uploadProductImage } from "./actions";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -233,6 +233,48 @@ export default async function ProductDetailPage({ params }: Props) {
                 defaultValue={product.customer_image_url ?? ""}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
               />
+            </div>
+
+            <div className="rounded-lg border border-slate-200 p-4">
+              <h3 className="text-sm font-semibold text-slate-900">
+                Upload Product Image
+              </h3>
+
+              {product.customer_image_url ? (
+                <div className="mt-3">
+                  <img
+                    src={product.customer_image_url}
+                    alt={product.name}
+                    className="max-h-64 rounded-lg border border-slate-200 object-contain"
+                  />
+                </div>
+              ) : (
+                <p className="mt-2 text-sm text-slate-500">
+                  No customer image uploaded yet.
+                </p>
+              )}
+
+              <form
+                action={uploadProductImage}
+                className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center"
+              >
+                <input type="hidden" name="product_id" value={product.id} />
+
+                <input
+                  type="file"
+                  name="product_image"
+                  accept="image/jpeg,image/png,image/webp"
+                  required
+                  className="block w-full text-sm text-slate-700"
+                />
+
+                <button
+                  type="submit"
+                  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+                >
+                  Upload Image
+                </button>
+              </form>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">

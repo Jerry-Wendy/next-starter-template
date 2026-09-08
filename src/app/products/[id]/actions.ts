@@ -194,3 +194,66 @@ export async function deletePricingTier(formData: FormData) {
 
   revalidatePath(`/products/${productId}`);
 }
+
+export async function uploadProductImage(formData: FormData) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
+  const productId = String(formData.get("product_id") || "").trim();
+  const file = formData.get("product_image");
+
+  if (!productId) {
+    throw new Error("Product ID is required.");
+  }
+
+  if (!(file instanceof File) || file.size === 0) {
+    throw new Error("Please choose an image file.");
+  }
+
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error("Please upload a JPG, PNG, or WEBP image.");
+  }
+
+  const extension =
+    file.name.split(".").pop()?.toLowerCase() || "jpg";
+
+  const filePath = `${productId}/customer.${extension}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("Product images")
+    .upload(filePath, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+
+  if (uploadError) {
+    throw new Error(`Could not upload image: ${uploadError.message}`);
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("Product images")
+    .getPublicUrl(filePath);
+
+  const { error: updateError } = await supabase
+    .from("products")
+    .update({
+      customer_image_url: publicUrlData.publicUrl,
+    })
+    .eq("id", productId);
+
+  if (updateError) {
+    throw new Error(`Could not save image URL: ${updateError.message}`);
+  }
+
+  revalidatePath(`/products/${productId}`);
+  revalidatePath("/products");
+}
