@@ -37,6 +37,12 @@ export default async function CatalogPage() {
     <main className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-7xl px-6 py-10">
         <header className="mb-10 border-b border-slate-200 pb-6">
+          <a
+            href="/"
+            className="mb-4 inline-block text-sm font-medium text-slate-600 underline"
+          >
+            ← Back to Dashboard
+          </a>
           <h1 className="text-3xl font-bold text-slate-900">
             Lillian Harper Designs
           </h1>
