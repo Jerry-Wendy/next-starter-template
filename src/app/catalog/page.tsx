@@ -116,6 +116,14 @@ export default async function CatalogPage() {
                           </div>
                         ))}
                       </div>
+                {tiers.length > 0 && tiers[tiers.length - 1].max_quantity != null && (
+                  <div className="mt-2 flex justify-between text-sm font-medium text-slate-700">
+                    <span>{Number(tiers[tiers.length - 1].max_quantity) + 1}+</span>
+                    <a href="mailto:lillianharperinc@gmail.com" className="underline">
+                      Contact Us
+                    </a>
+                  </div>
+                )}
                     </div>
                   ) : (
                     <div className="mt-5">
