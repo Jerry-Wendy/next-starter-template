@@ -11,7 +11,7 @@ export default async function ProductsPage() {
       name,
       sku,
       category,
-      customer_image_url,
+      business_image_url,
       manufacturer,
       supplier,
       wholesale_cost,
@@ -76,9 +76,9 @@ export default async function ProductsPage() {
               {(products ?? []).map((product) => (
                 <tr key={product.id} className="text-sm text-slate-700">
               <td className="px-5 py-3">
-                {product.customer_image_url ? (
+                {product.business_image_url ? (
                   <img
-                    src={product.customer_image_url}
+                    src={product.business_image_url}
                     alt={product.name}
                     className="h-14 w-14 rounded-md border border-slate-200 bg-white object-contain"
                   />
