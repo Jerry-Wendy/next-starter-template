@@ -118,7 +118,7 @@ export default async function EditOpportunityPage({
             <option value="Open">Open</option>
             <option value="Quote Needed">Quote Needed</option>
             <option value="Quote Sent">Quote Sent</option>
-            <option value="Waiting">Waiting</option>
+            <option value="Waiting on Customer">Waiting on Customer</option>
             <option value="Won">Won</option>
             <option value="Lost">Lost</option>
           </select>
