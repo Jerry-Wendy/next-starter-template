@@ -42,6 +42,16 @@ export default async function Home() {
     throw new Error(`Could not load upcoming visit count: ${visitsError.message}`);
   }
 
+  const { count: openQuotes, error: quotesError } = await supabase
+    .from("opportunities")
+    .select("*", { count: "exact", head: true })
+    .neq("quote_status", "Won")
+    .neq("quote_status", "Lost");
+
+  if (quotesError) {
+    throw new Error(`Could not load open quote count: ${quotesError.message}`);
+  }
+
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
     {
@@ -54,7 +64,11 @@ export default async function Home() {
       value: String(activeProspects ?? 0),
       note: (activeProspects ?? 0) > 0 ? "Prospects being developed" : "No active prospects",
     },
-    { label: "Open Quotes", value: "0", note: "No open quotes" },
+    {
+      label: "Open Quotes",
+      value: String(openQuotes ?? 0),
+      note: (openQuotes ?? 0) > 0 ? "Quotes in progress" : "No open quotes",
+    },
     { label: "Revenue", value: "$0", note: "Outreach attributed" },
     { label: "Marketing ROI", value: "—", note: "Waiting for first results" },
   ];
