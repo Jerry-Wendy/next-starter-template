@@ -66,6 +66,7 @@ export default async function OpportunitiesPage() {
                 <th className="p-3">Status</th>
                 <th className="p-3">Probability</th>
                 <th className="p-3">Follow-Up</th>
+                <th className="p-3">Edit</th>
               </tr>
             </thead>
 
@@ -96,6 +97,14 @@ export default async function OpportunitiesPage() {
                   </td>
                   <td className="p-3">
                     {opportunity.follow_up_date || "—"}
+                  </td>
+                  <td className="p-3">
+                    <Link
+                      href={`/opportunities/${opportunity.id}/edit`}
+                      className="underline"
+                    >
+                      Edit
+                    </Link>
                   </td>
                 </tr>
               ))}
