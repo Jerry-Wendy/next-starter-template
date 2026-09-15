@@ -49,7 +49,14 @@ export default async function CatalogPage() {
           <p className="mt-2 text-slate-600">
             Personalized gifts, promotional products and custom laser engraving.
           </p>
-        </header>
+        
+        <a
+          href="/catalog/builder"
+          className="mt-5 inline-block rounded-lg bg-slate-900 px-5 py-3 font-semibold text-white"
+        >
+          Build Prospect Catalog
+        </a>
+</header>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {(products ?? []).map((product) => {
