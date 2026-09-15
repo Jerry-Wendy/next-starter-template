@@ -139,6 +139,12 @@ export default async function ProspectCatalogPage({
                             </span>
                           </div>
                         ))}
+              {tiers.length > 0 && tiers[tiers.length - 1].max_quantity != null && (
+                <div className="flex justify-between text-sm font-semibold text-slate-700">
+                  <span>{tiers[tiers.length - 1].max_quantity + 1}+</span>
+                  <span>Contact Us</span>
+                </div>
+              )}
                       </div>
                     </div>
                   ) : product.retail_price != null ? (
