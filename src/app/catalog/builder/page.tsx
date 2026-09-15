@@ -49,6 +49,7 @@ export default async function CatalogBuilderPage() {
           </p>
         </div>
 
+        <form action="/catalog/prospect" method="GET">
         <section className="mb-8 rounded-2xl border bg-white p-6 shadow-sm">
           <label className="mb-2 block text-sm font-semibold text-slate-700">
             Prospect / Business
@@ -142,12 +143,13 @@ export default async function CatalogBuilderPage() {
 
         <div className="mt-8 flex justify-end">
           <button
-            type="button"
+            type="submit"
             className="rounded-lg bg-slate-900 px-6 py-3 font-semibold text-white"
           >
             Generate Prospect Catalog
           </button>
         </div>
+      </form>
       </div>
     </main>
   );
