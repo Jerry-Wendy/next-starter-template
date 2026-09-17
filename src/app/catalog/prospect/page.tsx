@@ -1,4 +1,5 @@
 import { createClient } from "../../lib/supabase/server";
+import PrintButton from "./PrintButton";
 
 export default async function ProspectCatalogPage({
   searchParams,
@@ -72,7 +73,11 @@ export default async function ProspectCatalogPage({
               Prepared for {business.name}
             </p>
           )}
-        </header>
+        
+        <div className="mt-5 print:hidden">
+          <PrintButton />
+        </div>
+      </header>
 
         <div className="grid gap-6 md:grid-cols-2">
           {(products ?? []).map((product: any) => {
