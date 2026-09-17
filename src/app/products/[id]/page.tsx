@@ -157,6 +157,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </dl>
           </section>
 
+      {product.category !== "Cutting Boards" && (
           <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="mb-4 text-lg font-semibold text-slate-900">
               Available Colors
@@ -194,6 +195,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </button>
             </form>
           </section>
+      )}
 
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900">
