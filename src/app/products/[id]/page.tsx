@@ -305,7 +305,9 @@ export default async function ProductDetailPage({ params }: Props) {
               )}
 
               <form
-                action={uploadProductImage}
+                action="/api/products/customer-image"
+                method="POST"
+                encType="multipart/form-data"
                 className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center"
               >
                 <input type="hidden" name="product_id" value={product.id} />
