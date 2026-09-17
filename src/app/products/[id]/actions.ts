@@ -228,9 +228,11 @@ export async function uploadProductImage(formData: FormData) {
 
   const filePath = `${productId}/customer.${extension}`;
 
+  const fileBuffer = new Uint8Array(await file.arrayBuffer());
+
   const { error: uploadError } = await supabase.storage
     .from("Product images")
-    .upload(filePath, file, {
+    .upload(filePath, fileBuffer, {
       upsert: true,
       contentType: file.type,
     });
