@@ -119,6 +119,7 @@ export default async function Home() {
               "Orders",
               "Business Catalog",
               "Customer Catalog",
+    "Saved Catalogs",
               "ROI",
             ].map((item, index) => (
           item === "Prospects" ? (
