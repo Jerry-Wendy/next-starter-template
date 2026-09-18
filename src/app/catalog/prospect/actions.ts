@@ -2,6 +2,7 @@
 
 import { createClient } from "@/app/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function saveCatalog(formData: FormData) {
   const supabase = await createClient();
@@ -43,5 +44,6 @@ export async function saveCatalog(formData: FormData) {
     throw new Error(`Could not save catalog: ${error.message}`);
   }
 
-  revalidatePath("/catalog");
+  revalidatePath("/catalog/saved");
+  redirect("/catalog/saved");
 }
