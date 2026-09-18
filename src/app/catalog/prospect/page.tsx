@@ -60,6 +60,13 @@ export default async function ProspectCatalogPage({
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-6xl px-6 py-10">
+        <a
+          href="/"
+          className="mb-5 inline-block text-sm font-medium text-slate-600 underline print:hidden"
+        >
+          ← Back to Dashboard
+        </a>
+
         <header className="mb-8 border-b border-slate-200 pb-6">
           <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
             Lillian Harper Designs
