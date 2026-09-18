@@ -1,3 +1,4 @@
+import { deleteCatalog } from "./actions";
 import { createClient } from "../../lib/supabase/server";
 
 export default async function SavedCatalogsPage() {
@@ -93,14 +94,26 @@ export default async function SavedCatalogsPage() {
                         {new Date(catalog.created_at).toLocaleDateString()}
                       </td>
 
-                      <td className="px-5 py-4 text-right">
-                        <a
-                          href={`/catalog/prospect?${params.toString()}`}
-                          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+                      <td className="px-5 py-4">
+                    <div className="flex items-center justify-end gap-2">
+                      <a
+                        href={`/catalog/prospect?${params.toString()}`}
+                        className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+                      >
+                        Open / Print
+                      </a>
+
+                      <form action={deleteCatalog}>
+                        <input type="hidden" name="catalog_id" value={catalog.id} />
+                        <button
+                          type="submit"
+                          className="rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
                         >
-                          Open / Print
-                        </a>
-                      </td>
+                          Delete
+                        </button>
+                      </form>
+                    </div>
+                  </td>
                     </tr>
                   );
                 })}
