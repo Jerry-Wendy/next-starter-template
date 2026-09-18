@@ -1,5 +1,6 @@
 import { createClient } from "../../lib/supabase/server";
 import PrintButton from "./PrintButton";
+import { saveCatalog } from "./actions";
 
 export default async function ProspectCatalogPage({
   searchParams,
@@ -76,6 +77,40 @@ export default async function ProspectCatalogPage({
         
         <div className="mt-5 print:hidden">
           <PrintButton />
+
+        <form action={saveCatalog} className="mt-3 flex flex-wrap items-end gap-3">
+          <input type="hidden" name="business_id" value={business?.id ?? ""} />
+
+          {(products ?? []).map((product: any) => (
+            <input
+              key={product.id}
+              type="hidden"
+              name="product_ids"
+              value={product.id}
+            />
+          ))}
+
+          <div>
+            <label htmlFor="catalog_name" className="mb-1 block text-sm font-medium text-slate-700">
+              Save as
+            </label>
+            <input
+              id="catalog_name"
+              name="catalog_name"
+              type="text"
+              required
+              defaultValue={`${business?.name ?? "Prospect"} Catalog`}
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="rounded-lg bg-slate-700 px-5 py-2 text-sm font-semibold text-white"
+          >
+            Save Catalog
+          </button>
+        </form>
         </div>
       </header>
 
