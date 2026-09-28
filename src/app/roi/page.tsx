@@ -12,11 +12,13 @@ export default async function ROIPage() {
 
   const { data: costs } = await supabase
     .from("marketing_costs")
-    .select("amount");
+    .select("id, business_id, description, category, amount, incurred_date, created_at")
+    .order("created_at", { ascending: false });
 
   const { data: revenue } = await supabase
     .from("revenue_attribution")
-    .select("*");
+    .select("*")
+    .order("created_at", { ascending: false });
 
   const totalCost = (costs ?? []).reduce(
     (sum, row) => sum + Number(row.amount ?? 0),
@@ -248,6 +250,81 @@ export default async function ROIPage() {
               </button>
             </div>
           </form>
+        </div>
+
+        <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-slate-900">
+            Recent ROI Activity
+          </h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Recent marketing expenses and attributed revenue recorded in the CRM.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b text-slate-500">
+                <tr>
+                  <th className="pb-3 pr-4">Type</th>
+                  <th className="pb-3 pr-4">Business</th>
+                  <th className="pb-3 pr-4">Description</th>
+                  <th className="pb-3 pr-4">Date</th>
+                  <th className="pb-3 text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {(costs ?? []).map((item) => {
+                  const business = (businesses ?? []).find(
+                    (b) => b.id === item.business_id
+                  );
+
+                  return (
+                    <tr key={`cost-${item.id}`}>
+                      <td className="py-3 pr-4 font-medium">Marketing Cost</td>
+                      <td className="py-3 pr-4">{business?.name ?? "General"}</td>
+                      <td className="py-3 pr-4">
+                        {item.description}
+                        {item.category ? ` — ${item.category}` : ""}
+                      </td>
+                      <td className="py-3 pr-4">{item.incurred_date ?? "—"}</td>
+                      <td className="py-3 text-right">
+                        -{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.amount ?? 0))}
+                      </td>
+                    </tr>
+                  );
+                })}
+
+                {(revenue ?? []).map((item) => {
+                  const business = (businesses ?? []).find(
+                    (b) => b.id === item.business_id
+                  );
+
+                  return (
+                    <tr key={`revenue-${item.id}`}>
+                      <td className="py-3 pr-4 font-medium">Revenue</td>
+                      <td className="py-3 pr-4">{business?.name ?? "—"}</td>
+                      <td className="py-3 pr-4">Attributed Revenue</td>
+                      <td className="py-3 pr-4">
+                        {item.created_at
+                          ? new Date(item.created_at).toLocaleDateString()
+                          : "—"}
+                      </td>
+                      <td className="py-3 text-right">
+                        +{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.attributed_revenue ?? 0))}
+                      </td>
+                    </tr>
+                  );
+                })}
+
+                {(costs ?? []).length === 0 && (revenue ?? []).length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-slate-500">
+                      No ROI activity recorded yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
