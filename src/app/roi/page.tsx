@@ -409,15 +409,6 @@ export default async function ROIPage() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">
-            ROI Overview
-          </h2>
-          <p className="mt-2 text-slate-500">
-            As marketing costs and attributed sales are entered into the CRM,
-            this page will automatically calculate your results.
-          </p>
-        </div>
       </div>
     </main>
   );
