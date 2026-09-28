@@ -74,7 +74,25 @@ export default async function ProductsPage() {
             </thead>
 
             <tbody className="divide-y divide-slate-100">
-              {(products ?? []).map((product) => (
+              {(products ?? []).map((product, index, allProducts) => {
+                const category = product.category || "Uncategorized";
+                const previousCategory =
+                  index > 0
+                    ? allProducts[index - 1].category || "Uncategorized"
+                    : null;
+
+                return (
+                  <>
+                    {category !== previousCategory && (
+                      <tr className="bg-slate-200">
+                        <td
+                          colSpan={9}
+                          className="px-5 py-3 text-sm font-bold uppercase tracking-wide text-slate-700"
+                        >
+                          {category}
+                        </td>
+                      </tr>
+                    )}
                 <tr key={product.id} className="text-sm text-slate-700">
               <td className="px-5 py-3">
                 {product.business_image_url ? (
@@ -117,7 +135,9 @@ export default async function ProductsPage() {
                     {product.active ? "Active" : "Inactive"}
                   </td>
                 </tr>
-              ))}
+                  </>
+                );
+              })}
 
               {(products ?? []).length === 0 && (
                 <tr>
