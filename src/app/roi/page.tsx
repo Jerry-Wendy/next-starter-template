@@ -1,8 +1,14 @@
 import Link from "next/link";
 import { createClient } from "../lib/supabase/server";
+import { addMarketingCost } from "./actions";
 
 export default async function ROIPage() {
   const supabase = await createClient();
+
+  const { data: businesses } = await supabase
+    .from("businesses")
+    .select("id, name")
+    .order("name");
 
   const { data: costs } = await supabase
     .from("marketing_costs")
@@ -92,6 +98,102 @@ export default async function ROIPage() {
               {roi.toFixed(1)}%
             </p>
           </div>
+        </div>
+
+        <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-slate-900">
+            Add Marketing Cost
+          </h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Record expenses related to prospecting, samples, advertising and sales activity.
+          </p>
+
+          <form action={addMarketingCost} className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Business
+              </label>
+              <select
+                name="business_id"
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2"
+              >
+                <option value="">General / No Business</option>
+                {(businesses ?? []).map((business) => (
+                  <option key={business.id} value={business.id}>
+                    {business.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Description
+              </label>
+              <input
+                name="description"
+                required
+                placeholder="Sample, ad, travel..."
+                className="w-full rounded-lg border border-slate-300 px-3 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Category
+              </label>
+              <select
+                name="category"
+                required
+                defaultValue=""
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2"
+              >
+                <option value="" disabled>Select category</option>
+                <option value="Samples">Samples</option>
+                <option value="Advertising">Advertising</option>
+                <option value="Travel / Mileage">Travel / Mileage</option>
+                <option value="Events">Events</option>
+                <option value="Promotional Materials">Promotional Materials</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Amount
+              </label>
+              <input
+                name="amount"
+                type="number"
+                min="0.01"
+                step="0.01"
+                required
+                placeholder="0.00"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">
+                Date
+              </label>
+              <input
+                name="incurred_date"
+                type="date"
+                required
+                className="w-full rounded-lg border border-slate-300 px-3 py-2"
+              />
+            </div>
+
+            <div className="md:col-span-2 xl:col-span-5">
+              <button
+                type="submit"
+                className="rounded-lg bg-slate-900 px-5 py-2.5 font-medium text-white hover:bg-slate-700"
+              >
+                Add Marketing Cost
+              </button>
+            </div>
+          </form>
         </div>
 
         <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
