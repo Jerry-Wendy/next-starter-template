@@ -20,6 +20,7 @@ export default async function ProductsPage() {
       availability,
       active
     `)
+    .order("category", { ascending: true, nullsFirst: false })
     .order("name", { ascending: true });
 
   if (error) {
