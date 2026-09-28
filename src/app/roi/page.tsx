@@ -39,6 +39,34 @@ export default async function ROIPage() {
   const profit = totalRevenue - totalCost;
   const roi = totalCost > 0 ? (profit / totalCost) * 100 : 0;
 
+  const businessROI = (businesses ?? [])
+    .map((business) => {
+      const businessCost = (costs ?? [])
+        .filter((row) => row.business_id === business.id)
+        .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+
+      const businessRevenue = (revenue ?? [])
+        .filter((row) => row.business_id === business.id)
+        .reduce(
+          (sum, row) => sum + Number(row.attributed_revenue ?? 0),
+          0
+        );
+
+      const businessReturn = businessRevenue - businessCost;
+      const businessRoi =
+        businessCost > 0 ? (businessReturn / businessCost) * 100 : null;
+
+      return {
+        id: business.id,
+        name: business.name,
+        cost: businessCost,
+        revenue: businessRevenue,
+        returnAmount: businessReturn,
+        roi: businessRoi,
+      };
+    })
+    .filter((business) => business.cost > 0 || business.revenue > 0);
+
   const money = (value: number) =>
     new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -250,6 +278,60 @@ export default async function ROIPage() {
               </button>
             </div>
           </form>
+        </div>
+
+        <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-slate-900">
+            ROI by Client / Prospect
+          </h2>
+          <p className="mt-2 text-sm text-slate-500">
+            See what has gone out, what has come back in, and the return for each business.
+          </p>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b text-slate-500">
+                <tr>
+                  <th className="pb-3 pr-4">Client / Prospect</th>
+                  <th className="pb-3 pr-4 text-right">Marketing Out</th>
+                  <th className="pb-3 pr-4 text-right">Revenue In</th>
+                  <th className="pb-3 pr-4 text-right">Return</th>
+                  <th className="pb-3 text-right">ROI</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {businessROI.map((business) => (
+                  <tr key={business.id}>
+                    <td className="py-3 pr-4 font-medium">
+                      {business.name}
+                    </td>
+                    <td className="py-3 pr-4 text-right">
+                      {money(business.cost)}
+                    </td>
+                    <td className="py-3 pr-4 text-right">
+                      {money(business.revenue)}
+                    </td>
+                    <td className="py-3 pr-4 text-right">
+                      {money(business.returnAmount)}
+                    </td>
+                    <td className="py-3 text-right">
+                      {business.roi === null
+                        ? "—"
+                        : `${business.roi.toFixed(1)}%`}
+                    </td>
+                  </tr>
+                ))}
+
+                {businessROI.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-slate-500">
+                      No client ROI activity recorded yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
