@@ -58,8 +58,23 @@ export default async function CatalogPage() {
         </a>
 </header>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {(products ?? []).map((product) => {
+        <div className="space-y-12">
+          {Object.entries(
+          (products ?? []).reduce((groups: Record<string, any[]>, product) => {
+            const category = product.catalog_category || "Other";
+            if (!groups[category]) groups[category] = [];
+            groups[category].push(product);
+            return groups;
+          }, {})
+        ).map(([category, categoryProducts]) => (
+          <section key={category}>
+            <div className="mb-6 border-b-2 border-slate-300 pb-3">
+              <h2 className="text-2xl font-bold uppercase tracking-wide text-slate-700">
+                {category}
+              </h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {categoryProducts.map((product) => {
             const tiers = [...(product.product_pricing_tiers ?? [])].sort(
               (a, b) =>
                 (a.sort_order ?? 0) - (b.sort_order ?? 0) ||
@@ -171,7 +186,10 @@ export default async function CatalogPage() {
                 </div>
               </article>
             );
-          })}
+              })}
+            </div>
+          </section>
+        ))}
         </div>
       </div>
     </main>
