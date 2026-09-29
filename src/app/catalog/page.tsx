@@ -72,7 +72,7 @@ export default async function CatalogPage() {
                 className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
               >
                 {product.customer_image_url ? (
-                  <div className="flex h-64 items-center justify-center bg-white p-4">
+                  <div className="flex h-80 items-center justify-center bg-white p-4">
                     <img
                       src={product.customer_image_url}
                       alt={product.name}
