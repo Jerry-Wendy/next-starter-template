@@ -31,7 +31,19 @@ export default async function Home() {
 
   if (prospectsError) {
     throw new Error(`Could not load prospect count: ${prospectsError.message}`);
-  }
+  }const { data: priorityProspects, error: priorityProspectsError } =
+  await supabase
+    .from("businesses")
+    .select("id, name, industry, relationship_status, next_follow_up")
+    .eq("relationship_status", "Prospect")
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+if (priorityProspectsError) {
+  throw new Error(
+    `Could not load priority prospects: ${priorityProspectsError.message}`
+  );
+}
 
   const { count: upcomingVisits, error: visitsError } = await supabase
     .from("visits")
@@ -284,11 +296,12 @@ export default async function Home() {
               </div>
 
               <div className="space-y-3">
-                {prospects.map((prospect) => (
-                  <div
-                    key={prospect.name}
-                    className="rounded-xl border p-4"
-                  >
+                {priorityProspects.map((prospect) => (
+ <Link
+  key={prospect.id}
+  href={`/prospects/${prospect.id}`}
+  className="block rounded-xl border p-4 transition hover:bg-slate-50 hover:shadow-sm"
+>
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="font-semibold">{prospect.name}</p>
@@ -298,15 +311,17 @@ export default async function Home() {
                       </div>
 
                       <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
-                        {prospect.status}
+                        {prospect.relationship_status}
                       </span>
                     </div>
 
                     <div className="mt-4 flex items-center justify-between border-t pt-3">
                       <span className="text-xs text-slate-400">Next step</span>
-                      <span className="text-sm font-medium">{prospect.next}</span>
+                      <span className="text-sm font-medium">
+  {prospect.next_follow_up ? "Follow Up" : "Plan Visit"}
+</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
