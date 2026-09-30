@@ -68,11 +68,11 @@ export default async function CatalogPage() {
           }, {})
         ).map(([category, categoryProducts]) => (
           <section key={category}>
-            <div className="mb-6 border-b-2 border-slate-300 pb-3">
-              <h2 className="text-2xl font-bold uppercase tracking-wide text-slate-700">
-                {category}
-              </h2>
-            </div>
+            <div className="mb-6 rounded-lg bg-slate-800 px-6 py-4 shadow-sm">
+  <h2 className="text-2xl font-bold uppercase tracking-wide text-white">
+    {category}
+  </h2>
+</div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {categoryProducts.map((product) => {
             const tiers = [...(product.product_pricing_tiers ?? [])].sort(
