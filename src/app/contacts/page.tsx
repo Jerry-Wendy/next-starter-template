@@ -13,9 +13,9 @@ export default async function ContactsPage() {
       title,
       phone,
       email,
-      businesses (
-        name
-      )
+      businesses!contacts_business_id_fkey (
+  name
+)
     `)
     .order("created_at", { ascending: false });
 
@@ -26,7 +26,7 @@ export default async function ContactsPage() {
   const contacts = (data ?? []).map((contact) => ({
     id: contact.id,
     name: contact.name,
-    business: contact.businesses?.[0]?.name || "—",
+   business: contact.businesses?.[0]?.name || "—",
     role: contact.title || "—",
     phone: contact.phone || "",
     email: contact.email || "",
