@@ -111,7 +111,16 @@ const calendarDays = [
                 <tr key={item.id} className="hover:bg-slate-50">
                   <td className="px-5 py-4 font-semibold">{item.business}</td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.contact}</td>
-                  <td className="px-5 py-4 text-sm text-slate-600">{item.visitDate}</td>
+                  <td className="px-5 py-4 text-sm text-slate-600">
+  {new Date(item.visitDate).toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  })}
+</td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.status}</td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.notes}</td>
                 </tr>
