@@ -100,7 +100,14 @@ const businessNameById = new Map(
             <tbody className="divide-y">
               {contacts.map((contact) => (
                 <tr key={`${contact.name}-${contact.business}`}>
-                  <td className="px-5 py-4 font-semibold">{contact.name}</td>
+<td className="px-5 py-4 font-semibold">
+  <Link
+    href={`/contacts/${contact.id}`}
+    className="hover:underline hover:text-slate-600"
+  >
+    {contact.name}
+  </Link>
+</td>
                   <td className="px-5 py-4 text-sm text-slate-600">
                     {contact.business}
                   </td>
