@@ -32,16 +32,40 @@ export default async function VisitsPage() {
     status: item.status || "Planned",
     notes: item.notes || "—",
   }));
+const today = new Date();
 
+const calendarYear = today.getFullYear();
+const calendarMonth = today.getMonth();
+
+const monthName = today.toLocaleString("default", {
+  month: "long",
+});
+
+const firstDayOfMonth = new Date(
+  calendarYear,
+  calendarMonth,
+  1
+).getDay();
+
+const daysInMonth = new Date(
+  calendarYear,
+  calendarMonth + 1,
+  0
+).getDate();
+
+const calendarDays = [
+  ...Array(firstDayOfMonth).fill(null),
+  ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+];
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
           <div>
-            <h1 className="text-3xl font-bold">Visit Log</h1>
+            <h1 className="text-3xl font-bold">Visit Planner</h1>
             <p className="mt-1 text-slate-500">
-              Scheduled and completed prospect visits
-            </p>
+  Plan, schedule and manage customer visits
+</p>
           </div>
 
           <div className="flex gap-3">
