@@ -5,28 +5,49 @@ import { createClient } from "../lib/supabase/server";
 export default async function ContactsPage() {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("contacts")
-    .select(`
-      id,
-      name,
-      title,
-      phone,
-      email,
-      businesses!contacts_business_id_fkey (
-  name
-)
-    `)
-    .order("created_at", { ascending: false });
+const { data, error } = await supabase
+  .from("contacts")
+  .select(`
+    id,
+    business_id,
+    name,
+    title,
+    phone,
+    email
+  `)
+  .order("created_at", { ascending: false });
 
   if (error) {
     throw new Error(`Could not load contacts: ${error.message}`);
   }
+const businessIds = [
+  ...new Set(
+    (data ?? [])
+      .map((contact) => contact.business_id)
+      .filter((id): id is string => Boolean(id))
+  ),
+];
 
+const { data: businesses, error: businessesError } = businessIds.length
+  ? await supabase
+      .from("businesses")
+      .select("id, name")
+      .in("id", businessIds)
+  : { data: [], error: null };
+
+if (businessesError) {
+  throw new Error(`Could not load businesses: ${businessesError.message}`);
+}
+
+const businessNameById = new Map(
+  (businesses ?? []).map((business) => [business.id, business.name])
+);
   const contacts = (data ?? []).map((contact) => ({
     id: contact.id,
     name: contact.name,
-   business: contact.businesses?.[0]?.name || "—",
+   business: contact.business_id
+  ? businessNameById.get(contact.business_id) || "—"
+  : "—",
     role: contact.title || "—",
     phone: contact.phone || "",
     email: contact.email || "",
