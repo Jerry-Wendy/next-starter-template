@@ -128,6 +128,72 @@ const calendarDays = [
             </tbody>
           </table>
         </div>
+<div className="mt-10">
+  <div className="mb-5">
+    <h2 className="text-2xl font-bold">{monthName} {calendarYear}</h2>
+    <p className="mt-1 text-slate-500">
+      Scheduled visits at a glance
+    </p>
+  </div>
+
+  <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+    <div className="grid grid-cols-7 border-b bg-slate-50">
+      {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+        <div
+          key={day}
+          className="px-3 py-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-500"
+        >
+          {day}
+        </div>
+      ))}
+    </div>
+
+    <div className="grid grid-cols-7">
+      {calendarDays.map((day, index) => {
+        const dayVisits = day
+          ? visits.filter((visit) => {
+              const visitDate = new Date(visit.visitDate);
+              return (
+                visitDate.getFullYear() === calendarYear &&
+                visitDate.getMonth() === calendarMonth &&
+                visitDate.getDate() === day
+              );
+            })
+          : [];
+
+        return (
+          <div
+            key={index}
+            className="min-h-28 border-b border-r p-3"
+          >
+            {day && (
+              <>
+                <div className="mb-2 text-sm font-semibold text-slate-700">
+                  {day}
+                </div>
+
+                <div className="space-y-1">
+                  {dayVisits.map((visit) => (
+                    <div
+                      key={visit.id}
+                      className="rounded-lg bg-slate-900 px-2 py-1.5 text-xs text-white"
+                    >
+                      <div className="font-semibold">{visit.business}</div>
+                      {visit.contact !== "—" && (
+                        <div className="text-slate-300">{visit.contact}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
       </section>
     </main>
   );
