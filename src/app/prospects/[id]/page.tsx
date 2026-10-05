@@ -19,7 +19,17 @@ export default async function ProspectDetailPage({
   if (error || !prospect) {
     notFound();
   }
+const { data: contacts, error: contactsError } = await supabase
+  .from("contacts")
+  .select(
+    "id, business_id, name, title, email, phone, preferred_contact_method, notes"
+  )
+  .eq("business_id", id)
+  .order("created_at", { ascending: true });
 
+if (contactsError) {
+  throw new Error(`Could not load contacts: ${contactsError.message}`);
+}
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
@@ -97,6 +107,57 @@ export default async function ProspectDetailPage({
           </div>
         </div>
       </section>
+      <section className="mx-auto max-w-7xl px-6 pb-8">
+  <div className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="flex items-center justify-between">
+      <div>
+        <h2 className="text-lg font-semibold">Contacts</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          People associated with this prospect
+        </p>
+      </div>
+
+      <Link
+        href={`/contacts/new?business_id=${prospect.id}`}
+        className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+      >
+        + Add Contact
+      </Link>
+    </div>
+
+    <div className="mt-5 space-y-3">
+      {contacts && contacts.length > 0 ? (
+        contacts.map((contact) => (
+          <div
+            key={contact.id}
+            className="rounded-xl border border-slate-200 p-4"
+          >
+            <div className="font-semibold">{contact.name}</div>
+
+            {contact.title && (
+              <div className="text-sm text-slate-500">{contact.title}</div>
+            )}
+
+            <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
+              {contact.phone && <span>{contact.phone}</span>}
+              {contact.email && <span>{contact.email}</span>}
+            </div>
+
+            {contact.notes && (
+              <div className="mt-2 text-sm text-slate-500">
+                {contact.notes}
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <div className="rounded-xl border border-dashed border-slate-300 p-5 text-sm text-slate-500">
+          No contacts added yet.
+        </div>
+      )}
+    </div>
+  </div>
+</section>
     </main>
   );
 }
