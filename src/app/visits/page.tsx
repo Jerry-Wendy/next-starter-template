@@ -177,7 +177,12 @@ const calendarDays = [
                     <div
                       key={visit.id}
                       className="rounded-lg bg-slate-900 px-2 py-1.5 text-xs text-white"
-                    >
+                    ><div className="text-slate-300">
+  {new Date(visit.visitDate).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  })}
+</div>
                       <div className="font-semibold">{visit.business}</div>
                       {visit.contact !== "—" && (
                         <div className="text-slate-300">{visit.contact}</div>
