@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase/server";
-import { updateVisit } from "../../new/actions";
+ import { updateVisit, deleteVisit } from "../../new/actions";
 
 export default async function EditVisitPage({
   params,
@@ -147,6 +147,14 @@ export default async function EditVisitPage({
               </button>
             </div>
           </form>
+          <form action={deleteVisit.bind(null, id)}>
+  <button
+    type="submit"
+    className="mt-4 rounded-xl border border-red-300 px-5 py-3 font-semibold text-red-700 hover:bg-red-50"
+  >
+    Delete Appointment
+  </button>
+</form>
         </div>
       </section>
     </main>

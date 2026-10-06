@@ -108,3 +108,26 @@ export async function updateVisit(visitId: string, formData: FormData) {
 
   redirect("/visits");
 }
+
+export async function deleteVisit(visitId: string) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { error } = await supabase
+    .from("visits")
+    .delete()
+    .eq("id", visitId);
+
+  if (error) {
+    throw new Error(`Could not delete visit: ${error.message}`);
+  }
+
+  redirect("/visits");
+}
