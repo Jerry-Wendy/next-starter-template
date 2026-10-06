@@ -73,3 +73,38 @@ export async function saveVisit(formData: FormData) {
 
   redirect("/");
 }
+
+export async function updateVisit(visitId: string, formData: FormData) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const visitDate = String(formData.get("visit_date") || "").trim();
+  const status = String(formData.get("status") || "Planned").trim();
+  const notes = String(formData.get("notes") || "").trim();
+
+  if (!visitDate) {
+    throw new Error("Visit date is required.");
+  }
+
+  const { error } = await supabase
+    .from("visits")
+    .update({
+      visit_date: visitDate,
+      status,
+      notes: notes || null,
+    })
+    .eq("id", visitId);
+
+  if (error) {
+    throw new Error(`Could not update visit: ${error.message}`);
+  }
+
+  redirect("/visits");
+}

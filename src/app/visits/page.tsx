@@ -173,22 +173,26 @@ const calendarDays = [
                 </div>
 
                 <div className="space-y-1">
-                  {dayVisits.map((visit) => (
-                    <div
-                      key={visit.id}
-                      className="rounded-lg bg-slate-900 px-2 py-1.5 text-xs text-white"
-                    ><div className="text-slate-300">
-  {new Date(visit.visitDate).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  })}
-</div>
-                      <div className="font-semibold">{visit.business}</div>
-                      {visit.contact !== "—" && (
-                        <div className="text-slate-300">{visit.contact}</div>
-                      )}
-                    </div>
-                  ))}
+                 {dayVisits.map((visit) => (
+  <Link
+    key={visit.id}
+    href={`/visits/${visit.id}/edit`}
+    className="block rounded-lg bg-slate-900 px-2 py-1.5 text-xs text-white transition hover:bg-slate-700"
+  >
+    <div className="text-slate-300">
+      {new Date(visit.visitDate).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      })}
+    </div>
+
+    <div className="font-semibold">{visit.business}</div>
+
+    {visit.contact !== "—" && (
+      <div className="text-slate-300">{visit.contact}</div>
+    )}
+  </Link>
+))}
                 </div>
               </>
             )}
