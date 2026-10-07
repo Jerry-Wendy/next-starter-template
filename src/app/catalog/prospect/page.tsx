@@ -121,7 +121,7 @@ export default async function ProspectCatalogPage({
         </div>
       </header>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2">
           {(products ?? []).map((product: any) => {
             const tiers = [...(product.product_pricing_tiers ?? [])].sort(
               (a: any, b: any) =>
@@ -134,7 +134,7 @@ export default async function ProspectCatalogPage({
                 key={product.id}
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
               >
-                <div className="flex h-64 items-center justify-center bg-slate-100 p-4">
+                <div className="flex h-80 items-center justify-center bg-slate-100 p-3">
                   {product.customer_image_url ? (
                     <img
                       src={product.customer_image_url}
