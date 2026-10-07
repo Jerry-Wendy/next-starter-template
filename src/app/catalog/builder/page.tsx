@@ -112,7 +112,7 @@ const productsByCategory = (products ?? []).reduce(
               key={product.id}
               className="cursor-pointer overflow-hidden rounded-xl border bg-white shadow-sm transition hover:border-slate-400"
             >
-              <div className="flex h-64 items-center justify-center bg-slate-100 p-4">
+              <div className="flex h-80 items-center justify-center bg-slate-100 p-2">
                 {product.customer_image_url ? (
                   <img
                     src={product.customer_image_url}
