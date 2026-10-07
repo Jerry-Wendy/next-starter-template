@@ -299,7 +299,7 @@ if (priorityProspectsError) {
                 {priorityProspects.map((prospect) => (
  <Link
   key={prospect.id}
-  href={`/visits/new?business=${prospect.id}`}
+  href={`/prospects/${prospect.id}`}
   className="block rounded-xl border p-4 transition hover:bg-slate-50 hover:shadow-sm"
 >
                     <div className="flex items-start justify-between gap-4">
