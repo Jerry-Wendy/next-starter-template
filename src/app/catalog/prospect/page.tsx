@@ -56,7 +56,19 @@ export default async function ProspectCatalogPage({
   if (error) {
     throw new Error(`Could not load prospect catalog: ${error.message}`);
   }
+const productsByCategory = (products ?? []).reduce(
+  (groups: Record<string, any[]>, product: any) => {
+    const category = product.catalog_category || "Other";
 
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+
+    groups[category].push(product);
+    return groups;
+  },
+  {}
+);
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-6xl px-6 py-10">
@@ -122,7 +134,14 @@ export default async function ProspectCatalogPage({
       </header>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          {(products ?? []).map((product: any) => {
+          {Object.entries(productsByCategory).map(([category, categoryProducts]) => (
+            <div key={category} className="col-span-full">
+  <h2 className="mb-5 rounded-xl bg-slate-800 px-6 py-4 text-xl font-bold uppercase tracking-wide text-white">
+    {category}
+  </h2>
+
+  <div className="grid gap-6 lg:grid-cols-2">
+    {(categoryProducts ?? []).map((product: any) => {
             const tiers = [...(product.product_pricing_tiers ?? [])].sort(
               (a: any, b: any) =>
                 (a.sort_order ?? 0) - (b.sort_order ?? 0) ||
@@ -207,8 +226,12 @@ export default async function ProspectCatalogPage({
                 </div>
               </article>
             );
-          })}
-        </div>
+              })}
+  </div>
+</div>
+))}
+</div>
+        
 
         <footer className="mt-10 border-t border-slate-200 pt-6 text-center text-sm text-slate-500">
           Lillian Harper Designs • Custom Laser Engraving
