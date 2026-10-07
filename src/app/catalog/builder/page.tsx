@@ -31,7 +31,19 @@ export default async function CatalogBuilderPage() {
   if (productsError) {
     throw new Error(`Could not load products: ${productsError.message}`);
   }
+const productsByCategory = (products ?? []).reduce(
+  (groups, product) => {
+    const category = product.catalog_category || "Other";
 
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+
+    groups[category].push(product);
+    return groups;
+  },
+  {} as Record<string, typeof products>
+);
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-6xl px-6 py-10">
@@ -88,12 +100,19 @@ export default async function CatalogBuilderPage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {(products ?? []).map((product) => (
+          {Object.entries(productsByCategory).map(([category, categoryProducts]) => (
+  <div key={category} className="col-span-full">
+    <h3 className="mb-4 rounded-xl bg-slate-800 px-6 py-4 text-xl font-bold uppercase tracking-wide text-white">
+      {category}
+    </h3>
+
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {(categoryProducts ?? []).map((product) => (
             <label
               key={product.id}
               className="cursor-pointer overflow-hidden rounded-xl border bg-white shadow-sm transition hover:border-slate-400"
             >
-              <div className="flex h-40 items-center justify-center bg-slate-100 p-4">
+              <div className="flex h-64 items-center justify-center bg-slate-100 p-4">
                 {product.customer_image_url ? (
                   <img
                     src={product.customer_image_url}
@@ -139,6 +158,9 @@ export default async function CatalogBuilderPage() {
               </div>
             </label>
           ))}
+              </div>
+  </div>
+))}
         </div>
 
         <div className="mt-8 flex justify-end">
