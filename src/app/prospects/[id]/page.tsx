@@ -42,7 +42,17 @@ if (followupNotesError) {
     `Could not load follow-up notes: ${followupNotesError.message}`
   );
 }
+const { data: savedCatalogs, error: catalogsError } = await supabase
+  .from("saved_catalogs")
+  .select("id, catalog_name, product_ids, created_at, business_id")
+  .eq("business_id", id)
+  .order("created_at", { ascending: false });
 
+if (catalogsError) {
+  throw new Error(
+    `Could not load saved catalogs: ${catalogsError.message}`
+  );
+}
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
@@ -208,7 +218,53 @@ if (followupNotesError) {
     </p>
   )}
 </div>
+<div className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 className="mb-4 text-xl font-bold text-slate-900">
+    Saved Catalogs
+  </h2>
 
+  {!savedCatalogs || savedCatalogs.length === 0 ? (
+    <p className="text-sm text-slate-500">
+      No saved catalogs for this business yet.
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {savedCatalogs.map((catalog) => {
+        const params = new URLSearchParams();
+        params.set("business", id);
+
+        (catalog.product_ids ?? []).forEach((productId: string) => {
+          params.append("products", productId);
+        });
+
+        return (
+          <div
+            key={catalog.id}
+            className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 p-4"
+          >
+            <div>
+              <p className="font-semibold text-slate-900">
+                {catalog.catalog_name}
+              </p>
+              <p className="text-sm text-slate-500">
+                {(catalog.product_ids ?? []).length} products
+                {" • "}
+                {new Date(catalog.created_at).toLocaleDateString()}
+              </p>
+            </div>
+
+            <Link
+              href={`/catalog/prospect?${params.toString()}`}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+            >
+              Open Catalog
+            </Link>
+          </div>
+        );
+      })}
+    </div>
+  )}
+</div>
 </section>
     </main>
   );
