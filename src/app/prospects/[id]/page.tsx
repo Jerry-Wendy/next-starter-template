@@ -30,6 +30,19 @@ const { data: contacts, error: contactsError } = await supabase
 if (contactsError) {
   throw new Error(`Could not load contacts: ${contactsError.message}`);
 }
+const { data: followupNotes, error: followupNotesError } =
+  await supabase
+    .from("followups")
+    .select("id, due_date, status, priority, notes")
+    .eq("business_id", id)
+    .order("due_date", { ascending: false });
+
+if (followupNotesError) {
+  throw new Error(
+    `Could not load follow-up notes: ${followupNotesError.message}`
+  );
+}
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
@@ -157,6 +170,45 @@ if (contactsError) {
       )}
     </div>
   </div>
+
+<div className="mt-6 rounded-2xl border bg-white p-6 shadow-sm">
+  <div className="mb-5 flex items-center justify-between">
+    <h2 className="text-lg font-semibold">
+      Notes &amp; Follow-Ups
+    </h2>
+    <Link
+      href="/followups/new"
+      className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+    >
+      + Add Follow-Up
+    </Link>
+  </div>
+
+  {followupNotes && followupNotes.length > 0 ? (
+    <div className="space-y-3">
+      {followupNotes.map((note) => (
+        <div
+          key={note.id}
+          className="rounded-xl border border-slate-200 p-4"
+        >
+          <div className="mb-2 flex flex-wrap gap-4 text-sm text-slate-500">
+            <span>Date: {note.due_date || "—"}</span>
+            <span>Status: {note.status || "Open"}</span>
+            <span>Priority: {note.priority || "Normal"}</span>
+          </div>
+          <p className="whitespace-pre-wrap text-sm text-slate-800">
+            {note.notes || "No note entered."}
+          </p>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-sm text-slate-500">
+      No follow-up notes for this prospect yet.
+    </p>
+  )}
+</div>
+
 </section>
     </main>
   );
