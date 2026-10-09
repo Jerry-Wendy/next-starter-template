@@ -1,7 +1,21 @@
 import Link from "next/link";
 import { saveVisit } from "./actions";
+import { createClient } from "../../lib/supabase/server";
+export default async function NewVisitPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ business_id?: string }>;
+}) {
+  const { business_id } = await searchParams;
+  const supabase = await createClient();
 
-export default function NewVisitPage() {
+const { data: business } = business_id
+  ? await supabase
+      .from("businesses")
+      .select("name")
+      .eq("id", business_id)
+      .maybeSingle()
+  : { data: null };
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
@@ -31,6 +45,7 @@ export default function NewVisitPage() {
               <input
                 type="text"
                 name="business"
+                defaultValue={business?.name ?? ""}
                 className="mt-2 w-full rounded-lg border px-3 py-2.5"
                 placeholder="Business name"
               />
