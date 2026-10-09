@@ -67,7 +67,14 @@ export default async function ProspectsPage() {
             <tbody className="divide-y">
               {prospects.map((prospect) => (
                 <tr key={prospect.name} className="hover:bg-slate-50">
-                  <td className="px-5 py-4 font-semibold">{prospect.name}</td>
+                  <td className="px-5 py-4 font-semibold">
+  <Link
+    href={`/prospects/${prospect.id}`}
+    className="text-slate-900 hover:text-blue-600 hover:underline"
+  >
+    {prospect.name}
+  </Link>
+</td>
                   <td className="px-5 py-4 text-sm text-slate-600">
                     {prospect.industry}
                   </td>
