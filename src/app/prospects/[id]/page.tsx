@@ -114,7 +114,7 @@ if (catalogsError) {
 
             <div className="mt-5 flex flex-col gap-3">
               <Link
-                href={`/visit?business_id=${prospect.id}`}
+                href={`/visits/new?business_id=${prospect.id}`}
                 className="rounded-lg bg-slate-900 px-5 py-3 text-center font-semibold text-white hover:bg-slate-800"
               >
                 Plan Visit
