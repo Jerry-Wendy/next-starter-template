@@ -136,7 +136,9 @@ const businessesWithNotes = new Set(
               "Prospects",
               "Contacts",
               "Visit Planner",
-              "Visit Log",
+"Calendar",
+"Visit Log",
+    
               "Samples",
               "Follow-Ups",
               "Opportunities",
@@ -186,7 +188,15 @@ const businessesWithNotes = new Set(
               >
                 {item}
               </Link>
-            ) : item === "Visit Log" ? (
+            ) : item === "Calendar" ? (
+  <Link
+    key={item}
+    href="/visits"
+    className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+  >
+    {item}
+  </Link>
+) : item === "Visit Log" ? (
                   <Link
                     key={item}
                     href="/visits"
