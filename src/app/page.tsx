@@ -43,7 +43,19 @@ if (priorityProspectsError) {
   throw new Error(
     `Could not load priority prospects: ${priorityProspectsError.message}`
   );
+}const { data: prospectNotes, error: prospectNotesError } = await supabase
+  .from("followups")
+  .select("business_id")
+  .not("notes", "is", null)
+  .neq("notes", "");
+
+if (prospectNotesError) {
+  throw new Error(`Could not load prospect notes: ${prospectNotesError.message}`);
 }
+
+const businessesWithNotes = new Set(
+  (prospectNotes ?? []).map((note) => note.business_id)
+);
 
   const { count: upcomingVisits, error: visitsError } = await supabase
     .from("visits")
@@ -309,7 +321,11 @@ if (priorityProspectsError) {
                           {prospect.industry}
                         </p>
                       </div>
-
+{businessesWithNotes.has(prospect.id) && (
+  <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
+    📝 Notes
+  </span>
+)}
                       <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
                         {prospect.relationship_status}
                       </span>
