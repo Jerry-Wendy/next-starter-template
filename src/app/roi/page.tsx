@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { createClient } from "../lib/supabase/server";
-import { addMarketingCost, addAttributedRevenue } from "./actions";
-
+import {
+  addMarketingCost,
+  addAttributedRevenue,
+} from "./actions";
+import DeleteMarketingCostButton from "./DeleteMarketingCostButton";
 export default async function ROIPage() {
   const supabase = await createClient();
 
@@ -351,6 +354,7 @@ export default async function ROIPage() {
                   <th className="pb-3 pr-4">Description</th>
                   <th className="pb-3 pr-4">Date</th>
                   <th className="pb-3 text-right">Amount</th>
+                  <th className="pb-3 pl-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
@@ -371,6 +375,9 @@ export default async function ROIPage() {
                       <td className="py-3 text-right">
                         -{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.amount ?? 0))}
                       </td>
+                      <td className="py-3 pl-4 text-right">
+  <DeleteMarketingCostButton id={item.id} />
+</td>
                     </tr>
                   );
                 })}

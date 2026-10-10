@@ -48,3 +48,17 @@ export async function addAttributedRevenue(formData: FormData) {
 
   revalidatePath("/roi");
 }
+export async function deleteMarketingCost(id: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("marketing_costs")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(`Could not delete marketing cost: ${error.message}`);
+  }
+
+  revalidatePath("/roi");
+}
