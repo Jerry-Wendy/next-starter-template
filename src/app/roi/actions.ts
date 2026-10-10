@@ -62,3 +62,20 @@ export async function deleteMarketingCost(id: string) {
 
   revalidatePath("/roi");
 }
+
+export async function deleteAttributedRevenue(id: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("revenue_attribution")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(
+      `Could not delete attributed revenue: ${error.message}`
+    );
+  }
+
+  revalidatePath("/roi");
+}
