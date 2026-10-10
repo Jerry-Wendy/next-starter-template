@@ -44,7 +44,10 @@ export default function EditMarketingCostButton({
 
   return (
     <form
-      action={updateMarketingCost.bind(null, id)}
+      action={async (formData) => {
+  await updateMarketingCost(id, formData);
+  setEditing(false);
+}}
       className="flex min-w-64 flex-col gap-2 rounded-lg border bg-white p-3 text-left shadow-sm"
     >
       <label className="text-xs font-semibold">Business</label>
