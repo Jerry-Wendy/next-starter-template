@@ -113,3 +113,30 @@ export async function deleteAttributedRevenue(id: string) {
 
   revalidatePath("/roi");
 }
+export async function updateAttributedRevenue(
+  id: string,
+  formData: FormData
+) {
+  const supabase = await createClient();
+
+  const businessId = String(formData.get("business_id") ?? "");
+  const amount = Number(formData.get("attributed_revenue"));
+
+  if (!businessId || !Number.isFinite(amount) || amount <= 0) {
+    throw new Error("Please select a business and enter a valid revenue amount.");
+  }
+
+  const { error } = await supabase
+    .from("revenue_attribution")
+    .update({
+      business_id: businessId,
+      attributed_revenue: amount,
+    })
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(`Could not update revenue: ${error.message}`);
+  }
+
+  revalidatePath("/roi");
+}

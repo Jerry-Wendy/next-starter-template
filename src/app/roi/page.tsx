@@ -5,6 +5,7 @@ import {
   addAttributedRevenue,
 } from "./actions";
 import DeleteMarketingCostButton from "./DeleteMarketingCostButton";
+import EditRevenueButton from "./EditRevenueButton";
 import DeleteRevenueButton from "./DeleteRevenueButton";
 import EditMarketingCostButton from "./EditMarketingCostButton";
 export default async function ROIPage() {
@@ -412,6 +413,12 @@ export default async function ROIPage() {
                         +{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.attributed_revenue ?? 0))}
                       </td>
                     <td className="py-3 pl-4 text-right">
+                      <EditRevenueButton
+  id={item.id}
+  businessId={item.business_id}
+  amount={item.attributed_revenue}
+  businesses={businesses ?? []}
+/>
   <DeleteRevenueButton id={item.id} />
 </td>  
                     </tr>
