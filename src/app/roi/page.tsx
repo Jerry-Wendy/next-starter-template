@@ -6,6 +6,7 @@ import {
 } from "./actions";
 import DeleteMarketingCostButton from "./DeleteMarketingCostButton";
 import DeleteRevenueButton from "./DeleteRevenueButton";
+import EditMarketingCostButton from "./EditMarketingCostButton";
 export default async function ROIPage() {
   const supabase = await createClient();
 
@@ -377,6 +378,15 @@ export default async function ROIPage() {
                         -{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.amount ?? 0))}
                       </td>
                       <td className="py-3 pl-4 text-right">
+                        <EditMarketingCostButton
+  id={item.id}
+  businessId={item.business_id}
+  description={item.description}
+  category={item.category}
+  amount={item.amount}
+  incurredDate={item.incurred_date}
+  businesses={businesses ?? []}
+/>
   <DeleteMarketingCostButton id={item.id} />
 </td>
                     </tr>
