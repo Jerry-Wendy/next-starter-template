@@ -415,6 +415,7 @@ export default async function ROIPage() {
                         +{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(item.attributed_revenue ?? 0))}
                       </td>
                     <td className="py-3 pl-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
                       <EditRevenueButton
   id={item.id}
   businessId={item.business_id}
@@ -422,6 +423,7 @@ export default async function ROIPage() {
   businesses={businesses ?? []}
 />
   <DeleteRevenueButton id={item.id} />
+  </div>
 </td>  
                     </tr>
                   );
