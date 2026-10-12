@@ -62,9 +62,9 @@ const calendarDays = [
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
           <div>
-            <h1 className="text-3xl font-bold">Visit Planner</h1>
+            <h1 className="text-3xl font-bold">Visit Log</h1>
             <p className="mt-1 text-slate-500">
-  Plan, schedule and manage customer visits
+  View completed visits, review visit notes and manage visit history
 </p>
           </div>
 
