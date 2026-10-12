@@ -65,7 +65,28 @@ const businessesWithNotes = new Set(
   if (visitsError) {
     throw new Error(`Could not load upcoming visit count: ${visitsError.message}`);
   }
+const { data: scheduledVisits, error: scheduledVisitsError } = await supabase
+  .from("visits")
+  .select("business_id, visit_date, status")
+  .gte("visit_date", new Date().toISOString())
+  .order("visit_date", { ascending: true });
 
+if (scheduledVisitsError) {
+  throw new Error(
+    `Could not load scheduled visits: ${scheduledVisitsError.message}`
+  );
+}
+const visitByBusinessId = new Map<string, string>();
+
+for (const visit of scheduledVisits ?? []) {
+  if (
+    visit.business_id &&
+    visit.visit_date &&
+    !visitByBusinessId.has(visit.business_id)
+  ) {
+    visitByBusinessId.set(visit.business_id, visit.visit_date);
+  }
+}
   const { count: openQuotes, error: quotesError } = await supabase
     .from("opportunities")
     .select("*", { count: "exact", head: true })
@@ -344,9 +365,29 @@ const businessesWithNotes = new Set(
                     <div className="mt-4 flex items-center justify-between border-t pt-3">
                       <span className="text-xs text-slate-400">Next step</span>
                       <span className="text-sm font-medium">
-  {prospect.next_follow_up ? "Follow Up" : "Plan Visit"}
+  {visitByBusinessId.has(prospect.id)
+  ? "Prepare Samples"
+  : prospect.next_follow_up
+    ? "Follow Up"
+    : "Plan Visit"}
 </span>
                     </div>
+                    {visitByBusinessId.has(prospect.id) && (
+  <div className="mt-2 flex items-center justify-between text-sm">
+    <span className="text-slate-500">Scheduled visit</span>
+    <span className="font-medium">
+      {new Date(visitByBusinessId.get(prospect.id)!).toLocaleDateString(
+        "en-US",
+        {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          timeZone: "America/New_York",
+        }
+      )}
+    </span>
+  </div>
+)}
                   </Link>
                 ))}
               </div>
