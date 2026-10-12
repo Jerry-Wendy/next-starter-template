@@ -163,6 +163,7 @@ const calendarDays = [
           ? visits.filter((visit) => {
               const visitDate = new Date(visit.visitDate);
               return (
+                visit.status === "Planned" &&
                 visitDate.getFullYear() === calendarYear &&
                 visitDate.getMonth() === calendarMonth &&
                 visitDate.getDate() === day
@@ -171,6 +172,7 @@ const calendarDays = [
           : [];
 
         return (
+          
           <div
             key={index}
             className="min-h-28 border-b border-r p-3"
