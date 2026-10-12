@@ -446,18 +446,23 @@ const dashboardROI =
 
               <div className="mt-5 space-y-3">
                 {[
-                  "Review follow-ups due",
-                  "Plan upcoming visits",
-                  "Choose prospect-specific samples",
-                  "Record completed visits",
-                  "Update quotes and opportunities",
+                  { label: "Review follow-ups due", href: "/followups" },
+  { label: "Plan upcoming visits", href: "/visits/new" },
+  { label: "Choose prospect-specific samples", href: "/samples/new" },
+  { label: "Record completed visits", href: "/visits" },
+  { label: "Update quotes and opportunities", href: "/opportunities" },
                 ].map((task) => (
                   <div
-                    key={task}
+                    key={task.label}
                     className="flex items-center gap-3 rounded-xl border p-4"
                   >
                     <div className="h-5 w-5 rounded border-2 border-slate-300" />
-                    <span className="text-sm font-medium">{task}</span>
+                    <Link
+  href={task.href}
+  className="text-sm font-medium text-blue-700 hover:underline"
+>
+  {task.label}
+</Link>
                   </div>
                 ))}
               </div>
