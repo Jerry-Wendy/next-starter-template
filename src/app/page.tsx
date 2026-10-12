@@ -309,16 +309,24 @@ for (const visit of scheduledVisits ?? []) {
                 <p className="mt-2 text-xs text-slate-400">{stat.note}</p>
               </Link>
             ) : (
-              <div
+              <Link
                 key={stat.label}
-                className="rounded-2xl border bg-white p-5 shadow-sm"
+                href={
+  stat.label === "Follow-ups Due" ? "/followups" :
+  stat.label === "Upcoming Visits" ? "/visits" :
+  stat.label === "Active Prospects" ? "/prospects" :
+  stat.label === "Revenue" ? "/roi" :
+  stat.label === "Marketing ROI" ? "/roi" :
+  "/"
+}
+                className="block rounded-2xl border bg-white p-5 shadow-sm transition hover:bg-slate-50 hover:shadow-md"
               >
                 <p className="text-sm font-medium text-slate-500">
                   {stat.label}
                 </p>
                 <p className="mt-2 text-3xl font-bold">{stat.value}</p>
                 <p className="mt-2 text-xs text-slate-400">{stat.note}</p>
-              </div>
+              </Link>
             )
           )}
           </div>
