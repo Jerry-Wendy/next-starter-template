@@ -52,9 +52,9 @@ export default async function EditVisitPage({
       <header className="border-b bg-white">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-6">
           <div>
-            <h1 className="text-3xl font-bold">Edit Visit</h1>
+            <h1 className="text-3xl font-bold">Record / Edit Visit</h1>
             <p className="mt-1 text-slate-500">
-              Reschedule or update this appointment
+              Record visit results, update notes, change status, or reschedule an appointment
             </p>
           </div>
 

@@ -103,6 +103,7 @@ const calendarDays = [
                 <th className="px-5 py-3">Visit Date</th>
                 <th className="px-5 py-3">Status</th>
                 <th className="px-5 py-3">Notes</th>
+                <th className="px-5 py-3">Actions</th>
               </tr>
             </thead>
 
@@ -123,6 +124,14 @@ const calendarDays = [
 </td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.status}</td>
                   <td className="px-5 py-4 text-sm text-slate-600">{item.notes}</td>
+                  <td className="px-5 py-4">
+  <Link
+    href={`/visits/${item.id}/edit`}
+    className="inline-block rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+  >
+    Record Visit
+  </Link>
+</td>
                 </tr>
               ))}
             </tbody>
