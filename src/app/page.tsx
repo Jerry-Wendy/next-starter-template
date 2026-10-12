@@ -96,6 +96,32 @@ for (const visit of scheduledVisits ?? []) {
   if (quotesError) {
     throw new Error(`Could not load open quote count: ${quotesError.message}`);
   }
+const { data: dashboardCosts, error: dashboardCostsError } = await supabase
+  .from("marketing_costs")
+  .select("amount");
+
+if (dashboardCostsError) {
+  throw new Error(`Could not load marketing costs: ${dashboardCostsError.message}`);
+}
+const { data: dashboardRevenue, error: dashboardRevenueError } = await supabase
+  .from("revenue_attribution")
+  .select("attributed_revenue");
+
+if (dashboardRevenueError) {
+  throw new Error(`Could not load attributed revenue: ${dashboardRevenueError.message}`);
+}
+const dashboardTotalCost = (dashboardCosts ?? []).reduce(
+  (sum, row) => sum + Number(row.amount ?? 0),
+  0
+);
+const dashboardTotalRevenue = (dashboardRevenue ?? []).reduce(
+  (sum, row) => sum + Number(row.attributed_revenue ?? 0),
+  0
+);
+const dashboardROI =
+  dashboardTotalCost > 0
+    ? ((dashboardTotalRevenue - dashboardTotalCost) / dashboardTotalCost) * 100
+    : null;
 
   const stats = [
     { label: "Follow-ups Due", value: "0", note: "Nothing overdue" },
@@ -114,8 +140,19 @@ for (const visit of scheduledVisits ?? []) {
       value: String(openQuotes ?? 0),
       note: (openQuotes ?? 0) > 0 ? "Quotes in progress" : "No open quotes",
     },
-    { label: "Revenue", value: "$0", note: "Outreach attributed" },
-    { label: "Marketing ROI", value: "—", note: "Waiting for first results" },
+    {
+  label: "Revenue",
+  value: dashboardTotalRevenue.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  }),
+  note: "Outreach attributed",
+},
+    {
+  label: "Marketing ROI",
+  value: dashboardROI === null ? "—" : `${dashboardROI.toFixed(1)}%`,
+  note: dashboardROI === null ? "No marketing costs yet" : "Return on marketing investment",
+},
   ];
 
   const dashboardDate = new Intl.DateTimeFormat("en-US", {
