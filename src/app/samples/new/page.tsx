@@ -2,7 +2,12 @@ import Link from "next/link";
 import { createClient } from "../../lib/supabase/server";
 import { addSample } from "./actions";
 
-export default async function NewSamplePage() {
+export default async function NewSamplePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ business?: string }>;
+}) {
+  const { business = "" } = await searchParams;
   const supabase = await createClient();
 
   const { data: products, error: productsError } = await supabase
@@ -53,6 +58,7 @@ export default async function NewSamplePage() {
             </label>
             <input
               name="business"
+              defaultValue={business}
               required
               placeholder="Exact business name"
               className="w-full rounded-lg border border-slate-300 px-3 py-2"

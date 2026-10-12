@@ -105,8 +105,18 @@ export async function updateVisit(visitId: string, formData: FormData) {
   if (error) {
     throw new Error(`Could not update visit: ${error.message}`);
   }
+const { data: completedVisit } = await supabase
+  .from("visits")
+  .select("businesses(name)")
+  .eq("id", visitId)
+  .single();
+  if (status === "Completed") {
+  const businessName = (completedVisit?.businesses as unknown as { name: string } | null)?.name ?? "";
 
-  redirect("/visits");
+  redirect(`/samples/new?business=${encodeURIComponent(businessName)}`);
+}
+
+redirect("/visits");
 }
 
 export async function deleteVisit(visitId: string) {
