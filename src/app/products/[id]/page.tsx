@@ -107,6 +107,14 @@ export default async function ProductDetailPage({ params }: Props) {
             </p>
           </div>
         </div>
+        <div className="mb-6 flex justify-end">
+  <Link
+    href={`/products/${id}/edit`}
+    className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+  >
+    Edit Product
+  </Link>
+</div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">

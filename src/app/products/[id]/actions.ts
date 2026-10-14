@@ -323,3 +323,52 @@ export async function uploadBusinessImage(formData: FormData) {
   revalidatePath("/products");
 }
 
+export async function updateProductDetails(formData: FormData) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error("You must be signed in.");
+  }
+
+  const productId = String(formData.get("product_id") || "").trim();
+  const name = String(formData.get("name") || "").trim();
+  const sku = String(formData.get("sku") || "").trim();
+
+  if (!productId || !name) {
+    throw new Error("Product ID and name are required.");
+  }
+
+  const money = (field: string) => {
+    const value = String(formData.get(field) ?? "").trim();
+    if (value === "") return null;
+    const amount = Number(value);
+    if (!Number.isFinite(amount) || amount < 0) {
+      throw new Error(`Invalid amount for ${field}`);
+    }
+    return amount;
+  };
+
+  const { error } = await supabase
+    .from("products")
+    .update({
+      name,
+      sku,
+      wholesale_cost: money("wholesale_cost"),
+      retail_price: money("retail_price"),
+      additional_engraving_fee: money("additional_engraving_fee"),
+      description: String(formData.get("description") ?? ""),
+      internal_notes: String(formData.get("internal_notes") ?? ""),
+    })
+    .eq("id", productId);
+
+  if (error) {
+    throw new Error(`Could not save product: ${error.message}`);
+  }
+
+  revalidatePath(`/products/${productId}`);
+  revalidatePath("/products");
+}
