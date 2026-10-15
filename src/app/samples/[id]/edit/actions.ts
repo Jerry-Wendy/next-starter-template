@@ -18,7 +18,8 @@ export async function updateSample(formData: FormData) {
   const notes = String(
     formData.get("sample_description") || ""
   ).trim();
-
+const dateGiven = String(formData.get("date_given") || "").trim();
+const result = String(formData.get("result") || "").trim();
   if (!id) {
     throw new Error("Sample ID is required.");
   }
@@ -27,6 +28,8 @@ export async function updateSample(formData: FormData) {
     .from("samples")
     .update({
       sample_description: notes || null,
+      date_given: dateGiven || null,
+      result: result || null,
     })
     .eq("id", id);
 

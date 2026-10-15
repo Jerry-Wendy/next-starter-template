@@ -35,6 +35,21 @@ export default async function EditSamplePage({ params }: Props) {
         </p>
         <form action={updateSample} className="mt-6 space-y-6">
   <input type="hidden" name="id" value={id} />
+  <div className="rounded-xl border border-slate-200 bg-white p-6">
+  <label
+    htmlFor="date_given"
+    className="mb-2 block text-sm font-medium text-slate-700"
+  >
+    Date Given
+  </label>
+  <input
+    type="date"
+    id="date_given"
+    name="date_given"
+    defaultValue={sample.date_given ?? ""}
+    className="w-full rounded-lg border border-slate-300 px-3 py-2"
+  />
+</div>
                 <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
           <label
             htmlFor="sample_description"
@@ -50,6 +65,24 @@ export default async function EditSamplePage({ params }: Props) {
             className="w-full rounded-lg border border-slate-300 px-3 py-2"
           />
         </div>
+        <div>
+  <label
+    htmlFor="result"
+    className="mb-2 block text-sm font-medium text-slate-700"
+  >
+    Result
+  </label>
+  <select
+    id="result"
+    name="result"
+    defaultValue={sample.result ?? "Pending"}
+    className="w-full rounded-lg border border-slate-300 px-3 py-2"
+  >
+    <option value="Pending">Pending</option>
+    <option value="Interested">Interested</option>
+    <option value="Not Interested">Not Interested</option>
+  </select>
+</div>
         <button
   type="submit"
   className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
