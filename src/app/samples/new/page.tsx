@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "../../lib/supabase/server";
 import { addSample } from "./actions";
-
+import SampleProductFields from "./SampleProductFields";
 export default async function NewSamplePage({
   searchParams,
 }: {
@@ -65,50 +65,9 @@ export default async function NewSamplePage({
             />
           </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Product *
-            </label>
-            <select
-              name="product_id"
-              required
-              defaultValue=""
-              className="w-full rounded-lg border border-slate-300 px-3 py-2"
-            >
-              <option value="">Select product</option>
-              {(products ?? []).map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SampleProductFields products={products ?? []} />
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Color
-            </label>
-            <select
-              name="color_id"
-              defaultValue=""
-              className="w-full rounded-lg border border-slate-300 px-3 py-2"
-            >
-              <option value="">Select color</option>
-              {(products ?? []).flatMap((product) =>
-                (product.product_colors ?? []).map((pc: any) => (
-                  <option
-                    key={`${product.id}-${pc.color_id}`}
-                    value={pc.color_id}
-                  >
-                    {product.name} — {pc.colors?.name ?? "Color"}
-                  </option>
-                ))
-              )}
-            </select>
-            <p className="mt-1 text-xs text-slate-500">
-              Choose a color listed for the selected product.
-            </p>
-          </div>
+          
 
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700">
@@ -122,19 +81,7 @@ export default async function NewSamplePage({
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Internal Cost
-              </label>
-              <input
-                name="internal_cost"
-                type="number"
-                min="0"
-                step="0.01"
-                placeholder="0.00"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2"
-              />
-            </div>
+            
 
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">
