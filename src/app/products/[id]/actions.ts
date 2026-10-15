@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "../../lib/supabase/server";
 
 export async function updateProductColors(formData: FormData) {
@@ -371,4 +372,5 @@ export async function updateProductDetails(formData: FormData) {
 
   revalidatePath(`/products/${productId}`);
   revalidatePath("/products");
+  redirect("/products");
 }
