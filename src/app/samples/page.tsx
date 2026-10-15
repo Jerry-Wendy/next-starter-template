@@ -13,6 +13,7 @@ export default async function SamplesPage() {
       engraving_cost,
       date_given,
       result,
+      products(name),
       businesses(name),
       colors(name)
     `)
@@ -56,11 +57,13 @@ export default async function SamplesPage() {
               <tr>
                 <th className="px-5 py-3">Business</th>
                 <th className="px-5 py-3">Sample</th>
+                <th className="px-5 py-3">Notes</th>
                 <th className="px-5 py-3">Color</th>
                 <th className="px-5 py-3">Date Given</th>
                 <th className="px-5 py-3">Internal Cost</th>
                 <th className="px-5 py-3">Engraving</th>
                 <th className="px-5 py-3">Result</th>
+                <th className="px-5 py-3">Actions</th>
               </tr>
             </thead>
 
@@ -72,6 +75,7 @@ export default async function SamplesPage() {
                 return (
                   <tr key={sample.id} className="text-sm text-slate-700">
                     <td className="px-5 py-4 font-medium">{business}</td>
+                    <td className="px-5 py-4">{(sample.products as any)?.name ?? "—"}</td>
                     <td className="px-5 py-4">{sample.sample_description || "—"}</td>
                     <td className="px-5 py-4">{color}</td>
                     <td className="px-5 py-4">{sample.date_given || "—"}</td>
@@ -86,6 +90,14 @@ export default async function SamplesPage() {
                         : "—"}
                     </td>
                     <td className="px-5 py-4">{sample.result || "—"}</td>
+                    <td className="px-5 py-4">
+  <Link
+    href={`/samples/${sample.id}/edit`}
+    className="font-medium text-blue-600 hover:underline"
+  >
+    Edit
+  </Link>
+</td>
                   </tr>
                 );
               })}
