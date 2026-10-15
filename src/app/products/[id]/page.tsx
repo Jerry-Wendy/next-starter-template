@@ -162,6 +162,14 @@ export default async function ProductDetailPage({ params }: Props) {
                   {product.active ? "Active" : "Inactive"}
                 </dd>
               </div>
+              <div>
+  <dt className="font-medium text-slate-500">
+    Internal Notes
+  </dt>
+  <dd className="whitespace-pre-wrap text-slate-900">
+    {product.internal_notes || "—"}
+  </dd>
+</div>
             </dl>
           </section>
 
