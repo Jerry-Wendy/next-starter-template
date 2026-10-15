@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "../lib/supabase/server";
-
+import { deleteSample } from "./actions";
+import DeleteSampleButton from "./DeleteSampleButton";
 export default async function SamplesPage() {
   const supabase = await createClient();
 
@@ -97,6 +98,7 @@ export default async function SamplesPage() {
   >
     Edit
   </Link>
+  <DeleteSampleButton sampleId={sample.id} />
 </td>
                   </tr>
                 );
