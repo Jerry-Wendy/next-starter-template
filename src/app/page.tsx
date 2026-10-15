@@ -201,7 +201,7 @@ const dashboardROI =
               "Follow-Ups",
               "Opportunities",
               "Orders",
-              "Business Catalog",
+              "Product Catalog",
               "Customer Catalog",
     "Saved Catalogs",
               "ROI",
@@ -270,7 +270,7 @@ const dashboardROI =
                   >
                     {item}
                   </Link>
-                ) : item === "Business Catalog" ? (
+                ) : item === "Product Catalog" ? (
                   <Link
                     key={item}
                     href="/products"
