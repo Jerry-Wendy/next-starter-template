@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "../lib/supabase/server";
-
+import DeleteProductButton from "./DeleteProductButton";
 export default async function ProductsPage() {
   const supabase = await createClient();
 
@@ -142,6 +142,7 @@ export default async function ProductsPage() {
   >
     Edit
   </Link>
+  <DeleteProductButton productId={product.id} />
 </td>
                 </tr>
                   </>
