@@ -28,7 +28,42 @@ export default async function ROIPage() {
     .from("revenue_attribution")
     .select("*")
     .order("created_at", { ascending: false });
+  const { data: samples } = await supabase
+    .from("samples")
+    .select("id, product_id, internal_cost, engraving_cost");
+    const sampleCounts = (products ?? []).map((product) => {
+  const productSamples = (samples ?? []).filter(
+    (sample) => sample.product_id === product.id
+  );
+  const missingCostCount = productSamples.filter(
+  (sample) => sample.internal_cost == null
+).length;
+const sampleCost = productSamples.reduce(
+  (total, sample) =>
+    total +
+    Number(sample.internal_cost ?? 0) +
+    Number(sample.engraving_cost ?? 0),
+  0
+);
+const productSales = (revenue ?? []).filter(
+  (row) => row.product_id === product.id
+);
 
+const salesCount = productSales.length;
+const productRevenue = productSales.reduce(
+  (total, row) => total + Number(row.attributed_revenue ?? 0),
+  0
+);
+  return {
+    productId: product.id,
+    productName: product.name,
+    samplesGiven: productSamples.length,
+    sampleCost,
+    missingCostCount,
+    salesCount,
+productRevenue,
+  };
+});
   const totalCost = (costs ?? []).reduce(
     (sum, row) => sum + Number(row.amount ?? 0),
     0
@@ -358,7 +393,49 @@ export default async function ROIPage() {
             </table>
           </div>
         </div>
-
+<div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
+  <h2 className="text-xl font-semibold text-slate-900">
+    Sample Performance
+  </h2>
+  <p className="mt-2 text-sm text-slate-500">
+    See which sample products are generating sales and revenue.
+  </p>
+  <div className="mt-6 overflow-x-auto">
+  <table className="w-full text-left text-sm">
+    <thead className="border-b text-slate-500">
+      <tr>
+        <th className="pb-3 pr-4">Product</th>
+        <th className="pb-3 pr-4">Samples Given</th>
+        <th className="pb-3 pr-4">Sample Cost</th>
+        <th className="pb-3 pr-4">Sales</th>
+        <th className="pb-3 text-right">Revenue</th>
+      </tr>
+    </thead>
+    <tbody>
+  {sampleCounts
+    .filter((product) => product.samplesGiven > 0 || product.salesCount > 0)
+    .map((product) => (
+      <tr key={product.productId} className="border-b">
+        <td className="py-3 pr-4">{product.productName}</td>
+        <td className="py-3 pr-4">{product.samplesGiven}</td>
+        <td className="py-3 pr-4">
+  {money(product.sampleCost)}
+  {product.missingCostCount > 0 && (
+    <span className="ml-2 text-xs text-amber-600">
+      ({product.missingCostCount} missing cost)
+    </span>
+  )}
+</td>
+        <td className="py-3 pr-4">{product.salesCount}</td>
+        <td className="py-3 text-right">
+          {money(product.productRevenue)}
+        </td>
+      </tr>
+    ))}
+</tbody>
+  </table>
+</div>
+</div>
         <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
           <h2 className="text-xl font-semibold text-slate-900">
             Recent ROI Activity
