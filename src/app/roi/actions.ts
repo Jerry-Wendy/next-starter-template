@@ -34,7 +34,7 @@ export async function addAttributedRevenue(formData: FormData) {
 
   const businessId = String(formData.get("business_id") ?? "");
   const amount = Number(formData.get("attributed_revenue"));
-
+const productId = String(formData.get("product_id") ?? "");
   if (!businessId || !Number.isFinite(amount) || amount <= 0) {
     throw new Error("Please select a business and enter a valid revenue amount.");
   }
@@ -42,6 +42,7 @@ export async function addAttributedRevenue(formData: FormData) {
   const { error } = await supabase.from("revenue_attribution").insert({
     business_id: businessId,
     attributed_revenue: amount,
+    product_id: productId || null,
   });
 
   if (error) throw new Error(error.message);

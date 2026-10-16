@@ -15,7 +15,10 @@ export default async function ROIPage() {
     .from("businesses")
     .select("id, name")
     .order("name");
-
+  const { data: products } = await supabase
+    .from("products")
+    .select("id, name")
+    .order("name");
   const { data: costs } = await supabase
     .from("marketing_costs")
     .select("id, business_id, description, category, amount, incurred_date, created_at")
@@ -259,7 +262,23 @@ export default async function ROIPage() {
                 ))}
               </select>
             </div>
-
+<div>
+  <label className="mb-1 block text-sm font-medium text-slate-700">
+    Product Purchased
+  </label>
+  <select
+    name="product_id"
+    defaultValue=""
+    className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2"
+  >
+    <option value="">Select product (optional)</option>
+    {(products ?? []).map((product) => (
+      <option key={product.id} value={product.id}>
+        {product.name}
+      </option>
+    ))}
+  </select>
+</div>
             <div>
               <label className="mb-1 block text-sm font-medium text-slate-700">
                 Revenue Amount
