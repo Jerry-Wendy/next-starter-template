@@ -70,6 +70,7 @@ export default async function ProductsPage() {
                 <th className="px-5 py-3">Engraving</th>
                 <th className="px-5 py-3">Availability</th>
                 <th className="px-5 py-3">Status</th>
+                <th className="px-5 py-3">Actions</th>
               </tr>
             </thead>
 
@@ -134,6 +135,14 @@ export default async function ProductsPage() {
                   <td className="px-5 py-4">
                     {product.active ? "Active" : "Inactive"}
                   </td>
+                  <td className="px-5 py-4">
+  <Link
+    href={`/products/${product.id}/edit`}
+    className="font-medium text-blue-600 hover:underline"
+  >
+    Edit
+  </Link>
+</td>
                 </tr>
                   </>
                 );
