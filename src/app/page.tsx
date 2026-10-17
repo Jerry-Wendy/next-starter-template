@@ -249,7 +249,7 @@ const dashboardROI =
             ) : item === "Calendar" ? (
   <Link
     key={item}
-    href="/visits"
+    href="/calendar"
     className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100"
   >
     {item}
