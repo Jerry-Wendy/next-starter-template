@@ -43,8 +43,15 @@ const calendarDays = [
   ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
 ];
   return (
-    <main className="min-h-screen bg-slate-50 p-8">
+ <main   
+ className="min-h-screen bg-slate-50 p-8">
       <div className="mx-auto max-w-6xl">
+        <Link
+  href="/"
+  className="mb-6 inline-block rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+>
+  ← Back to Dashboard
+</Link>
         <h1 className="text-3xl font-bold text-slate-900">
           Calendar
         </h1>
