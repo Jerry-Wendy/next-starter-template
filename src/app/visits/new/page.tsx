@@ -8,7 +8,15 @@ export default async function NewVisitPage({
 }) {
   const { business_id } = await searchParams;
   const supabase = await createClient();
+const { data: businessOptions, error: businessOptionsError } =
+  await supabase
+    .from("businesses")
+    .select("id, name")
+    .order("name", { ascending: true });
 
+if (businessOptionsError) {
+  throw new Error(`Could not load businesses: ${businessOptionsError.message}`);
+}
 const { data: business } = business_id
   ? await supabase
       .from("businesses")
@@ -42,13 +50,18 @@ const { data: business } = business_id
           <div className="grid gap-6 sm:grid-cols-2">
             <label className="block">
               <span className="text-sm font-semibold">Business</span>
-              <input
-                type="text"
-                name="business"
-                defaultValue={business?.name ?? ""}
-                className="mt-2 w-full rounded-lg border px-3 py-2.5"
-                placeholder="Business name"
-              />
+              <select
+  name="business"
+  defaultValue={business?.name ?? ""}
+  className="mt-2 w-full rounded-lg border px-3 py-2.5"
+>
+  <option value="">Select a business</option>
+  {(businessOptions ?? []).map((item) => (
+    <option key={item.id} value={item.name}>
+      {item.name}
+    </option>
+  ))}
+</select>
             </label>
 
             <label className="block">
