@@ -4,7 +4,7 @@ export default async function CalendarPage() {
       const supabase = await createClient();
       const { data: visits, error: visitsError } = await supabase
   .from("visits")
-  .select("id, visit_date, status, notes")
+  .select("id, visit_date, status, notes, businesses(name)")
   .eq("status", "Planned")
   .order("visit_date", { ascending: true });
 
@@ -115,7 +115,10 @@ const dayFollowups = openFollowups.filter(
   timeZone: "America/New_York",
   hour: "numeric",
   minute: "2-digit",
-})} - Scheduled Visit
+})}
+<div className="font-semibold">
+  {visit.businesses?.[0]?.name ?? "Scheduled Visit"}
+</div>
   </div>
 ))}
 {dayFollowups.map((followup) => (
