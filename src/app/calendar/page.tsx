@@ -117,7 +117,7 @@ const dayFollowups = openFollowups.filter(
   minute: "2-digit",
 })}
 <div className="font-semibold">
-  {JSON.stringify(visit.businesses) ?? "No business data"}
+  {(visit.businesses as unknown as { name: string } | null)?.name ?? "Scheduled Visit"}
   
 </div>
   </div>
