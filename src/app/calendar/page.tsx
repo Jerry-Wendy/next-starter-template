@@ -107,8 +107,9 @@ const dayFollowups = openFollowups.filter(
         </span>
       )}
       {dayVisits.map((visit) => (
-  <div
+  <Link
     key={visit.id}
+    href={`/visits/${visit.id}/edit`}
     className="mt-1 rounded bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800"
   >
     {new Date(visit.visit_date).toLocaleTimeString("en-US", {
@@ -120,7 +121,7 @@ const dayFollowups = openFollowups.filter(
   {(visit.businesses as unknown as { name: string } | null)?.name ?? "Scheduled Visit"}
   
 </div>
-  </div>
+  </Link>
 ))}
 {dayFollowups.map((followup) => (
   <div
