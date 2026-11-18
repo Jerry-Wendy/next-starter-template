@@ -41,6 +41,14 @@ const { data: business } = business_id
           >
             ← Dashboard
           </Link>
+          <Link
+  href="/calendar"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="ml-3 rounded-lg border border-blue-300 bg-blue-50 px-5 py-2.5 font-medium text-blue-700 hover:bg-blue-100"
+>
+  📅 View Calendar
+</Link>
         </div>
       </header>
 
