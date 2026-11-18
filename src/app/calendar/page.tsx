@@ -17,7 +17,7 @@ if (visitsError) {
 }
 const { data: followups, error: followupsError } = await supabase
   .from("followups")
-  .select("id, due_date, status, priority, notes")
+  .select("id, due_date, status, priority, notes, businesses(name)")
   .eq("status", "Open")
   .order("due_date", { ascending: true });
 
@@ -153,9 +153,19 @@ const dayFollowups = openFollowups.filter(
 {dayFollowups.map((followup) => (
   <div
     key={followup.id}
-    className="mt-1 rounded bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800"
+    className={`mt-1 rounded px-2 py-1 text-xs font-medium ${
+  followup.priority?.toLowerCase() === "high"
+    ? "bg-red-100 text-red-800"
+    : "bg-amber-100 text-amber-800"
+}`}
   >
-    Follow-Up
+    <div className="font-semibold">
+  {(followup.businesses as unknown as { name: string } | null)?.name ?? "Follow-Up"}
+</div>
+<div className="text-xs">Follow-Up</div>
+<div className="mt-1 text-xs font-semibold">
+  Priority: {followup.priority ?? "Normal"}
+</div>
   </div>
 ))}
     </div>
