@@ -1,6 +1,10 @@
 import { createClient } from "../lib/supabase/server";
 import Link from "next/link";
-export default async function CalendarPage() {
+export default async function CalendarPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ month?: string }>;
+}) {
       const supabase = await createClient();
       const { data: visits, error: visitsError } = await supabase
   .from("visits")
@@ -31,9 +35,15 @@ const floridaDate = (value: string) =>
     month: "2-digit",
     day: "2-digit",
   }).format(new Date(value));
+  const { month: selectedMonth } = await searchParams;
 const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth();
+const selectedDate =
+  selectedMonth && /^\d{4}-\d{2}$/.test(selectedMonth)
+    ? new Date(`${selectedMonth}-01T12:00:00`)
+    : today;
+
+const year = selectedDate.getFullYear();
+const month = selectedDate.getMonth();
 
 const firstDayOfMonth = new Date(year, month, 1);
 const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -64,6 +74,23 @@ const calendarDays = [
 </p>
       </div>
       <section className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
+        <Link
+  href={`/calendar?month=${new Date(year, month - 1, 1).toLocaleDateString("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+  }).replace("/", "-")}`}
+  className="mb-4 inline-block rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-100"
+>
+  ← Previous Month
+</Link>
+<Link
+  href={`/calendar?month=${new Date(year, month + 1, 1)
+    .toISOString()
+    .slice(0, 7)}`}
+  className="mb-4 ml-2 inline-block rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-100"
+>
+  Next Month →
+</Link>
   <h2 className="text-xl font-bold text-slate-900">
   {firstDayOfMonth.toLocaleDateString("en-US", {
     month: "long",
