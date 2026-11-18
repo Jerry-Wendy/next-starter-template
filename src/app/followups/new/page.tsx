@@ -1,7 +1,18 @@
 import Link from "next/link";
 import { saveFollowUp } from "./actions";
+import { createClient } from "../../lib/supabase/server";
+export default async function NewFollowUpPage() {
+  const supabase = await createClient();
 
-export default function NewFollowUpPage() {
+  const { data: businesses, error } = await supabase
+    .from("businesses")
+    .select("id, name")
+    .eq("relationship_status", "Prospect")
+    .order("name", { ascending: true });
+
+  if (error) {
+    throw new Error(`Could not load prospects: ${error.message}`);
+  }
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b bg-white">
@@ -29,12 +40,21 @@ export default function NewFollowUpPage() {
 
             <label className="block">
               <span className="text-sm font-semibold">Business</span>
-              <input
-                type="text"
-                name="business"
-                className="mt-2 w-full rounded-lg border px-3 py-2.5"
-                placeholder="Business name"
-              />
+              <select
+  name="business"
+  required
+  defaultValue=""
+  className="mt-2 w-full rounded-lg border px-3 py-2.5"
+>
+  <option value="" disabled>
+    Select a Prospect
+  </option>
+  {(businesses ?? []).map((business) => (
+    <option key={business.id} value={business.name}>
+      {business.name}
+    </option>
+  ))}
+</select>
             </label>
 
             <label className="block">
@@ -97,6 +117,14 @@ export default function NewFollowUpPage() {
           </div>
 
           <div className="mt-8 flex justify-end gap-3">
+            <Link
+  href="/calendar"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="rounded-lg border border-blue-300 bg-blue-50 px-5 py-2.5 font-medium text-blue-700 hover:bg-blue-100"
+>
+  📅 View Calendar
+</Link>
             <Link
               href="/followups"
               className="rounded-lg border px-5 py-2.5 font-medium"
