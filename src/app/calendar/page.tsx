@@ -153,11 +153,17 @@ const dayFollowups = openFollowups.filter(
 {dayFollowups.map((followup) => (
   <div
     key={followup.id}
-    className={`mt-1 rounded px-2 py-1 text-xs font-medium ${
-  followup.priority?.toLowerCase() === "high"
+
+className={`mt-1 rounded px-2 py-1 text-xs font-medium ${
+  followup.priority?.toLowerCase() === "urgent"
     ? "bg-red-100 text-red-800"
-    : "bg-amber-100 text-amber-800"
+    : followup.priority?.toLowerCase() === "high"
+    ? "bg-purple-100 text-purple-800"
+    : followup.priority?.toLowerCase() === "normal"
+    ? "bg-green-100 text-green-800"
+    : "bg-blue-100 text-blue-800"
 }`}
+
   >
     <div className="font-semibold">
   {(followup.businesses as unknown as { name: string } | null)?.name ?? "Follow-Up"}
