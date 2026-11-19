@@ -57,6 +57,12 @@ const calendarDays = [
  className="min-h-screen bg-slate-50 p-8">
       <div className="mx-auto max-w-6xl">
         <Link
+  href="/visits"
+  className="mb-6 mr-2 inline-block rounded-lg border border-blue-300 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100"
+>
+  ← Back to Visit Log
+</Link>
+        <Link
   href="/"
   className="mb-6 inline-block rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
 >
