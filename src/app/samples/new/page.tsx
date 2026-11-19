@@ -27,7 +27,14 @@ export default async function NewSamplePage({
   if (productsError) {
     throw new Error(`Could not load products: ${productsError.message}`);
   }
+const { data: businesses, error: businessesError } = await supabase
+  .from("businesses")
+  .select("id, name")
+  .order("name", { ascending: true });
 
+if (businessesError) {
+  throw new Error(`Could not load businesses: ${businessesError.message}`);
+}
   return (
     <main className="min-h-screen bg-slate-50 p-8">
       <div className="mx-auto max-w-2xl">
@@ -56,13 +63,19 @@ export default async function NewSamplePage({
             <label className="mb-2 block text-sm font-medium text-slate-700">
               Business *
             </label>
-            <input
-              name="business"
-              defaultValue={business}
-              required
-              placeholder="Exact business name"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2"
-            />
+        <select
+  name="business"
+  defaultValue={business}
+  required
+  className="w-full rounded-lg border border-slate-300 px-3 py-2"
+>
+  <option value="">Select a business</option>
+  {(businesses ?? []).map((item) => (
+    <option key={item.id} value={item.name}>
+      {item.name}
+    </option>
+  ))}
+</select>
           </div>
 
           <SampleProductFields products={products ?? []} />
