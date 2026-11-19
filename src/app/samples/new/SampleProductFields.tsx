@@ -72,7 +72,7 @@ setSelectedColorId("");
     {availableColors.map((item) =>
       item.colors ? (
         <option key={item.color_id} value={item.color_id}>
-          {item.colors[0]?.name ?? "Unknown Color"}
+          {(item.colors as unknown as { name: string })?.name ?? "Unknown Color"}
         </option>
       ) : null
     )}
