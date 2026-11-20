@@ -30,7 +30,7 @@ export async function addProduct(formData: FormData) {
     throw new Error("Product name is required.");
   }
 
-  const { error } = await supabase.from("products").insert({
+  const { data, error } = await supabase.from("products").insert({
     name,
     sku: sku || null,
     category: category || null,
@@ -43,11 +43,11 @@ export async function addProduct(formData: FormData) {
     availability: availability || null,
     internal_notes: internalNotes || null,
     active: true,
-  });
+  }).select("id").single();
 
   if (error) {
     throw new Error(`Could not save product: ${error.message}`);
   }
 
-  redirect("/products");
+  redirect(`/products/${data.id}`);
 }
